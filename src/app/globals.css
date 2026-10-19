@@ -1,0 +1,118 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ivory: #FAF7F2;
+  --color-ivory-light: #FFFDFB;
+  --color-ivory-subtle: #F4EFEA;
+  --color-ivory-border: #E8E0D5;
+  --color-espresso: #1C1714;
+  --color-espresso-light: #3D3530;
+  --color-espresso-muted: #6B625B;
+  --color-gold: #B8975A;
+  --color-gold-light: #D4BD8B;
+  --color-gold-dark: #91723A;
+  --color-gold-subtle: rgba(184, 151, 90, 0.12);
+  --color-gold-border: rgba(184, 151, 90, 0.28);
+  --color-dark-section: #14110F;
+  --color-dark-card: #1D1815;
+  --color-dark-border: rgba(255, 255, 255, 0.08);
+
+  --font-cormorant: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-manrope: var(--font-manrope), "Manrope", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-tiro-hindi: var(--font-tiro-hindi), "Tiro Devanagari Hindi", Georgia, serif;
+  --font-noto-hindi: var(--font-noto-hindi), "Noto Sans Devanagari", sans-serif;
+}
+
+:root {
+  --bg-ivory: #FAF7F2;
+  --text-espresso: #1C1714;
+  --gold-accent: #B8975A;
+  --bg-dark: #14110F;
+}
+
+html {
+  background-color: #FAF7F2;
+  color: #1C1714;
+  scroll-behavior: smooth;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: #FAF7F2;
+  color: #1C1714;
+  font-family: var(--font-manrope), system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Hindi text typography mode */
+html[lang="hi"] body {
+  font-family: var(--font-noto-hindi), system-ui, sans-serif;
+}
+
+html[lang="hi"] h1,
+html[lang="hi"] h2,
+html[lang="hi"] h3,
+html[lang="hi"] .font-serif-heading {
+  font-family: var(--font-tiro-hindi), serif;
+}
+
+/* Subtle luxury selection */
+::selection {
+  background-color: #B8975A;
+  color: #FAF7F2;
+}
+
+/* Quiet luxury scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FAF7F2;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D4BD8B;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #B8975A;
+}
+
+/* Lenis smooth scroll */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

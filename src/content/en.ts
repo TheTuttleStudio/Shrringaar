@@ -1,0 +1,112 @@
+export const en = {
+  brand: {
+    name: "Shringaar",
+    tagline: "AI studio for Indian jewellery shops",
+  },
+  nav: {
+    howItWorks: "How it works",
+    catalogue: "Catalogue",
+    tryOn: "Virtual try-on",
+    pricing: "Pricing",
+    faq: "FAQ",
+  },
+  cta: {
+    bookDemo: "Book a demo",
+    exploreCatalogue: "View sample link",
+    submitDemo: "Request shop demo",
+    contactWhatsApp: "Chat on WhatsApp",
+  },
+  header: {
+    languageToggle: "हिंदी",
+    bookDemo: "Book a demo",
+  },
+  hero: {
+    tag: "Built for Indian Jewellers",
+    headingPrefix: "Turn simple counter photos into",
+    headingAccent: "studio brilliance",
+    headingSuffix: "in seconds.",
+    description: "Take photos on your phone. Shringaar cleans reflections, preserves authentic gold tones, and publishes an instant live catalogue with customer try-on.",
+    secondaryAction: "Explore live demo",
+    badgeRating: "Trusted by fine jewellery stores across Jaipur, Mumbai, & Surat",
+  },
+  placeholderSections: {
+    howItWorks: {
+      badge: "Simple 3-Step Process",
+      title: "How it works in your shop",
+      subtitle: "No expensive cameras. No graphic designers. Just your existing counter and your phone.",
+    },
+    catalogue: {
+      badge: "Pure Presentation",
+      title: "High-definition catalogues with true gold colour",
+      subtitle: "Reflections cleaned, background removed, gold warmth preserved exactly as seen in your glass case.",
+    },
+    tryOn: {
+      badge: "Customer Experience",
+      title: "Your customers wear your jewellery on their phone",
+      subtitle: "Place a small QR stand at your counter. Customers scan, take a selfie, and see your necklaces and earrings on themselves.",
+    },
+    pricing: {
+      badge: "Fair & Simple Pricing",
+      title: "Invest in your shop, not in photoshoots",
+      subtitle: "Transparent plans tailored for single shops and growing multi-branch jewellers.",
+    },
+    faq: {
+      badge: "Questions & Answers",
+      title: "Everything you need to know",
+      subtitle: "Clear answers to the most common questions from jewellery shop owners.",
+    },
+    demo: {
+      badge: "Live Walkthrough",
+      title: "See your own jewellery on Shringaar",
+      subtitle: "Send us two photos of your jewellery pieces. We will show you how they look in a live catalogue.",
+    },
+  },
+  pricing: {
+    starter: {
+      name: "Single Counter",
+      price: "₹3,999",
+      cadence: "per month",
+      desc: "For standalone jewellers starting their digital counter.",
+      f1: "Up to 150 jewellery pieces per month",
+      f2: "Dedicated shop link (shopname.shringaar.live)",
+      f3: "Customer QR code stand for counter",
+      f4: "Instant mobile virtual try-on",
+    },
+    growth: {
+      name: "Heritage Store",
+      price: "₹7,999",
+      cadence: "per month",
+      desc: "Our most popular plan for active jewellery showrooms.",
+      f1: "Up to 500 jewellery pieces per month",
+      f2: "Custom AI-generated Indian models",
+      f3: "High-definition export for WhatsApp & Instagram",
+      f4: "Priority counter try-on engine",
+      f5: "Dedicated onboarding specialist in Hindi & English",
+    },
+    atelier: {
+      name: "Multi-Store",
+      price: "Custom",
+      cadence: "tailored billing",
+      desc: "For chains and large jewellery houses with multiple locations.",
+      f1: "Unlimited jewellery pieces",
+      f2: "Multi-branch catalogue management",
+      f3: "Custom domain integration (catalogue.yourbrand.com)",
+      f4: "Staff training and in-store setup assistance",
+      f5: "Direct phone and WhatsApp support",
+    },
+  },
+  footer: {
+    description: "Quiet luxury technology for traditional Indian jewellers. Enhancing craft with respectful intelligence.",
+    quickLinks: "Sections",
+    contact: "Contact",
+    phone: "+91 98200 12345",
+    email: "namaste@shringaar.live",
+    location: "Zaveri Bazaar, Mumbai • Johari Bazaar, Jaipur",
+    rights: "All rights reserved.",
+    privacy: "Privacy Policy",
+    terms: "Terms of Service",
+    security: "Data Security",
+  },
+};
+
+export type ContentType = typeof en;
