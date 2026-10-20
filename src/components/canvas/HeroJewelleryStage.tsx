@@ -4,9 +4,9 @@ import React, { useState, useEffect, useMemo } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useT } from "@/hooks/useT";
-import { MetalType, StoneType } from "./RingModel";
-import { MoveHorizontal, AlertCircle } from "lucide-react";
+import { Hand, Sparkles, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { RingPartDetail, RingPartId } from "./RingPartDetail";
 
 // Lazy-load the Three.js canvas on client only
 const DynamicRingScene = dynamic(
@@ -61,12 +61,11 @@ function RingStillFallback({ reason }: { reason?: string }) {
 }
 
 export function HeroJewelleryStage() {
-  const { t } = useT();
+  const { t, isHindi } = useT();
 
-  const [metal, setMetal] = useState<MetalType>("yellow");
-  const [stone, setStone] = useState<StoneType>("diamond");
+  const [activePart, setActivePart] = useState<RingPartId | null>(null);
+  const [hoveredPart, setHoveredPart] = useState<RingPartId | null>(null);
   const [isLowTier, setIsLowTier] = useState(false);
-  const [lightTierMode, setLightTierMode] = useState<"physical" | "reflective">("physical");
   const [reducedMotion, setReducedMotion] = useState(false);
   const [webglError, setWebglError] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -75,10 +74,9 @@ export function HeroJewelleryStage() {
   useEffect(() => {
     setMounted(true);
 
-    // 1. Device tier detection: Touch device OR low CPU core count (never rely solely on width)
+    // 1. Device tier detection: Touch device OR low CPU core count
     const searchParams = new URLSearchParams(window.location.search);
     const tierParam = searchParams.get("tier");
-    const modeParam = searchParams.get("lightMode");
 
     const hasTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
     const isLowConcurrency = Boolean(
@@ -91,10 +89,6 @@ export function HeroJewelleryStage() {
       setIsLowTier(false);
     } else {
       setIsLowTier(hasTouch || isLowConcurrency);
-    }
-
-    if (modeParam === "reflective" || modeParam === "physical") {
-      setLightTierMode(modeParam);
     }
 
     // 2. Prefers reduced motion
@@ -118,62 +112,45 @@ export function HeroJewelleryStage() {
     return () => motionQuery.removeEventListener("change", motionListener);
   }, []);
 
-  // Metals config (3 options - strictly no karat claims)
-  const metals: { id: MetalType; labelKey: string; color: string; border: string }[] = useMemo(
+  // 4 Anatomical Ring Parts for inspection
+  const ringParts: { id: RingPartId; labelKey: string; image: string }[] = useMemo(
     () => [
       {
-        id: "yellow",
-        labelKey: "swatches.metals.yellowGold",
-        color: "bg-[#DEB558]",
-        border: "border-[#C59B3F]",
+        id: "head",
+        labelKey: "ringInspection.parts.head.label",
+        image: "/images/parts/crown.jpg",
       },
       {
-        id: "rose",
-        labelKey: "swatches.metals.roseGold",
-        color: "bg-[#DF9E8C]",
-        border: "border-[#C5806D]",
+        id: "basket",
+        labelKey: "ringInspection.parts.basket.label",
+        image: "/images/parts/basket.jpg",
       },
       {
-        id: "white",
-        labelKey: "swatches.metals.whiteGold",
-        color: "bg-[#E5EAEC]",
-        border: "border-[#B8C6CC]",
+        id: "shoulder",
+        labelKey: "ringInspection.parts.shoulder.label",
+        image: "/images/parts/pave.jpg",
+      },
+      {
+        id: "shank",
+        labelKey: "ringInspection.parts.shank.label",
+        image: "/images/parts/shank.jpg",
       },
     ],
     []
   );
 
-  // Stones config (4 options: Diamond, Emerald, Ruby, Blue Sapphire - bright & luminous)
-  const stones: { id: StoneType; labelKey: string; color: string }[] = useMemo(
-    () => [
-      {
-        id: "diamond",
-        labelKey: "swatches.stones.diamond",
-        color: "bg-gradient-to-tr from-white via-[#F5F9FC] to-[#E8F2FA]",
-      },
-      {
-        id: "emerald",
-        labelKey: "swatches.stones.emerald",
-        color: "bg-[#14A05C]",
-      },
-      {
-        id: "ruby",
-        labelKey: "swatches.stones.ruby",
-        color: "bg-[#D0173F]",
-      },
-      {
-        id: "sapphire",
-        labelKey: "swatches.stones.sapphire",
-        color: "bg-[#2A5BD7]",
-      },
-    ],
-    []
-  );
+  const displayedPart = activePart || hoveredPart;
 
   return (
     <div className="relative w-full flex flex-col items-center">
       {/* 3D Canvas Stage with generous ~15% padding */}
-      <div className="relative w-full max-w-[340px] sm:max-w-[420px] lg:max-w-[460px] h-[260px] sm:h-[360px] lg:h-[450px] rounded-2xl sm:rounded-3xl bg-gradient-to-b from-[#FFFDFB] to-[#F5EFE6]/80 border border-[#E8E0D5]/70 shadow-[0_8px_30px_rgba(28,23,20,0.04)] overflow-hidden">
+      <div
+        className="relative w-full max-w-[340px] sm:max-w-[420px] lg:max-w-[460px] h-[280px] sm:h-[370px] lg:h-[460px] rounded-2xl sm:rounded-3xl bg-gradient-to-b from-[#FFFDFB] to-[#F5EFE6]/80 border border-[#E8E0D5]/70 shadow-[0_8px_30px_rgba(28,23,20,0.04)] overflow-hidden"
+        onClick={() => {
+          setActivePart(null);
+          setHoveredPart(null);
+        }}
+      >
         {/* Subtle Luxury Stage Backdrop Glow */}
         <div className="absolute inset-0 pointer-events-none bg-radial from-[#B8975A]/8 via-transparent to-transparent opacity-60" />
 
@@ -182,121 +159,114 @@ export function HeroJewelleryStage() {
           <RingStillFallback reason="High-definition still view" />
         ) : (
           <DynamicRingScene
-            metal={metal}
-            stone={stone}
+            metal="yellow"
+            stone="diamond"
             isLowTier={isLowTier}
             reducedMotion={reducedMotion}
-            lightTierMode={lightTierMode}
+            lightTierMode="physical"
+            activePart={activePart}
+            hoveredPart={hoveredPart}
+            onHoverPart={(part) => setHoveredPart(part)}
+            onSelectPart={(part) => setActivePart(part)}
+            onBackgroundClick={() => {
+              setActivePart(null);
+              setHoveredPart(null);
+            }}
             onContextLost={() => setWebglError(true)}
             onFpsReport={(fps) => setCurrentFps(fps)}
           />
         )}
 
-        {/* Interactive Drag Hint */}
-        <div className="absolute bottom-2.5 inset-x-0 flex items-center justify-center pointer-events-none">
-          <div className="flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#FAF7F2]/90 backdrop-blur-sm border border-[#E8E0D5] text-[10px] sm:text-[11px] font-sans text-[#6B625B] shadow-sm">
-            <MoveHorizontal className="w-3 h-3 text-[#B8975A]" />
-            <span>{t("swatches.dragHint")}</span>
+        {/* Floating Part Details Dialogue Card */}
+        <RingPartDetail
+          partId={displayedPart}
+          onClose={() => {
+            setActivePart(null);
+            setHoveredPart(null);
+          }}
+        />
+
+        {/* Interactive Palm & Drag Hint (Visible when no part dialog is open) */}
+        {!displayedPart && (
+          <div className="absolute bottom-3 inset-x-0 flex items-center justify-center pointer-events-none transition-opacity duration-200">
+            <div className="flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#FAF7F2]/90 backdrop-blur-md border border-[#E8E0D5] text-[10px] sm:text-[11px] font-sans text-[#5C534D] shadow-sm">
+              <Hand className="w-3.5 h-3.5 text-[#B8975A]" />
+              <span>{t("ringInspection.dragHint")}</span>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Measured FPS Pill (Discrete debugging / verification badge) */}
         {currentFps !== null && (
-          <div className="absolute top-2.5 right-2.5 text-[9px] font-mono px-2 py-0.5 rounded-full bg-black/5 text-[#6B625B] border border-black/5">
+          <div className="absolute top-2.5 right-2.5 text-[9px] font-mono px-2 py-0.5 rounded-full bg-black/5 text-[#6B625B] border border-black/5 pointer-events-none">
             {currentFps} FPS
           </div>
         )}
       </div>
 
-      {/* Swatches Customizer Area */}
-      <div className="mt-3.5 sm:mt-5 w-full max-w-[420px] px-1 sm:px-2 flex flex-col gap-2.5 sm:gap-3.5">
-        {/* Metal Swatches */}
-        <div className="flex items-center justify-between sm:justify-center gap-2 sm:gap-5">
-          <span className="text-[11px] sm:text-xs font-sans text-[#8A7F77] tracking-wider uppercase min-w-[45px]">
-            {t("swatches.metals.title")}
+      {/* Anatomical Ring Part Explorer (Replaces customizer swatches) */}
+      <div className="mt-3.5 sm:mt-5 w-full max-w-[460px] px-1 sm:px-2 flex flex-col gap-2.5 sm:gap-3">
+        <div className="flex items-center justify-between px-1">
+          <span className="text-[11px] sm:text-xs font-sans text-[#8A7F77] tracking-wider uppercase flex items-center gap-1.5">
+            <Sparkles className="w-3 h-3 text-[#B8975A]" />
+            <span>Interactive Craft Anatomy</span>
           </span>
-          <div className="flex items-center gap-2 sm:gap-3" role="radiogroup" aria-label="Select Metal">
-            {metals.map((m) => {
-              const active = metal === m.id;
-              return (
-                <button
-                  key={m.id}
-                  type="button"
-                  data-metal={m.id}
-                  onClick={() => setMetal(m.id)}
-                  className={cn(
-                    "group relative min-w-[44px] min-h-[44px] w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B8975A]",
-                    active ? "scale-105" : "hover:scale-102 opacity-80 hover:opacity-100"
-                  )}
-                  aria-label={t(m.labelKey)}
-                  aria-checked={active}
-                  role="radio"
-                >
-                  <span
-                    className={cn(
-                      "absolute inset-0 rounded-full border-2 transition-all duration-200",
-                      active ? "border-[#1C1714] scale-100" : "border-transparent"
-                    )}
-                  />
-                  <span
-                    className={cn(
-                      "w-7 h-7 rounded-full shadow-inner border",
-                      m.color,
-                      m.border
-                    )}
-                  />
-                  <span className="absolute -top-7 whitespace-nowrap px-2 py-0.5 rounded bg-[#1C1714] text-[#FAF7F2] text-[10px] font-sans opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 z-20">
-                    {t(m.labelKey)}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
+          <span className="text-[10px] sm:text-[11px] font-sans text-[#8A7F77] hidden sm:inline-block">
+            Hover or tap to inspect
+          </span>
         </div>
 
-        {/* Stone Swatches (4 stones) */}
-        <div className="flex items-center justify-between sm:justify-center gap-2 sm:gap-5 pt-1.5 border-t border-[#E8E0D5]/50">
-          <span className="text-[11px] sm:text-xs font-sans text-[#8A7F77] tracking-wider uppercase min-w-[45px]">
-            {t("swatches.stones.title")}
-          </span>
-          <div className="flex items-center gap-2 sm:gap-3" role="radiogroup" aria-label="Select Gemstone">
-            {stones.map((s) => {
-              const active = stone === s.id;
-              return (
-                <button
-                  key={s.id}
-                  type="button"
-                  data-stone={s.id}
-                  onClick={() => setStone(s.id)}
-                  className={cn(
-                    "group relative min-w-[44px] min-h-[44px] w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B8975A]",
-                    active ? "scale-105" : "hover:scale-102 opacity-80 hover:opacity-100"
-                  )}
-                  aria-label={t(s.labelKey)}
-                  aria-checked={active}
-                  role="radio"
-                >
-                  <span
-                    className={cn(
-                      "absolute inset-0 rounded-full border-2 transition-all duration-200",
-                      active ? "border-[#1C1714] scale-100" : "border-transparent"
-                    )}
+        {/* 4 Part Inspection Buttons */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5">
+          {ringParts.map((part) => {
+            const isSelected = activePart === part.id || hoveredPart === part.id;
+            return (
+              <button
+                key={part.id}
+                type="button"
+                data-part={part.id}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setActivePart(activePart === part.id ? null : part.id);
+                }}
+                onPointerEnter={() => setHoveredPart(part.id)}
+                onPointerLeave={() => setHoveredPart(null)}
+                className={cn(
+                  "group relative min-h-[44px] px-2.5 py-2 rounded-xl border flex items-center gap-2.5 transition-all duration-200 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B8975A]",
+                  isSelected
+                    ? "bg-[#FAF7F2] border-[#B8975A] shadow-sm ring-1 ring-[#B8975A]/40"
+                    : "bg-[#FFFDFB] border-[#E8E0D5] hover:border-[#B8975A]/60 hover:bg-[#FAF7F2]"
+                )}
+                aria-pressed={isSelected}
+              >
+                {/* Micro Thumbnail */}
+                <div className="relative w-7 h-7 rounded-lg overflow-hidden border border-[#E8E0D5] flex-shrink-0">
+                  <Image
+                    src={part.image}
+                    alt={t(part.labelKey)}
+                    fill
+                    sizes="28px"
+                    className="object-cover group-hover:scale-110 transition-transform duration-300"
                   />
+                </div>
+
+                {/* Part Label */}
+                <div className="flex flex-col min-w-0">
                   <span
                     className={cn(
-                      "w-7 h-7 rounded-full shadow-sm border border-black/10 relative overflow-hidden",
-                      s.color
+                      "text-[11px] sm:text-xs font-sans font-medium truncate transition-colors",
+                      isSelected ? "text-[#91723A]" : "text-[#1C1714] group-hover:text-[#91723A]"
                     )}
                   >
-                    <span className="absolute inset-0 bg-gradient-to-tr from-white/35 to-transparent" />
+                    {t(part.labelKey)}
                   </span>
-                  <span className="absolute -top-7 whitespace-nowrap px-2 py-0.5 rounded bg-[#1C1714] text-[#FAF7F2] text-[10px] font-sans opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 z-20">
-                    {t(s.labelKey)}
+                  <span className="text-[9px] font-sans text-[#8A7F77] truncate">
+                    Inspect specs
                   </span>
-                </button>
-              );
-            })}
-          </div>
+                </div>
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>

@@ -7,31 +7,45 @@ import { CubeCamera, ContactShadows } from "@react-three/drei";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import { StudioLights } from "./StudioLights";
 import { RingModel, MetalType, StoneType } from "./RingModel";
+import { RingPartId } from "./RingPartDetail";
 
 interface RingSceneProps {
-  metal: MetalType;
-  stone: StoneType;
+  metal?: MetalType;
+  stone?: StoneType;
   isLowTier: boolean;
   reducedMotion: boolean;
   lightTierMode?: "physical" | "reflective";
+  activePart?: RingPartId | null;
+  hoveredPart?: RingPartId | null;
+  onHoverPart?: (part: RingPartId | null) => void;
+  onSelectPart?: (part: RingPartId) => void;
+  onBackgroundClick?: () => void;
   onContextLost?: () => void;
   onFpsReport?: (fps: number) => void;
 }
 
 // Inner animated stage that manages gentle rotation, inertia, and user horizontal drag
 function RotatableRingStage({
-  metal,
-  stone,
+  metal = "yellow",
+  stone = "diamond",
   isLowTier,
   reducedMotion,
   lightTierMode,
+  activePart,
+  hoveredPart,
+  onHoverPart,
+  onSelectPart,
   onFpsReport,
 }: {
-  metal: MetalType;
-  stone: StoneType;
+  metal?: MetalType;
+  stone?: StoneType;
   isLowTier: boolean;
   reducedMotion: boolean;
   lightTierMode?: "physical" | "reflective";
+  activePart?: RingPartId | null;
+  hoveredPart?: RingPartId | null;
+  onHoverPart?: (part: RingPartId | null) => void;
+  onSelectPart?: (part: RingPartId) => void;
   onFpsReport?: (fps: number) => void;
 }) {
   const groupRef = useRef<THREE.Group>(null);
@@ -117,6 +131,7 @@ function RotatableRingStage({
   return (
     <group
       ref={groupRef}
+      rotation={[0.48, 0.58, 0]}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
@@ -136,6 +151,10 @@ function RotatableRingStage({
             isLowTier={isLowTier}
             envMap={texture}
             lightTierMode={lightTierMode}
+            activePart={activePart}
+            hoveredPart={hoveredPart}
+            onHoverPart={onHoverPart}
+            onSelectPart={onSelectPart}
           />
         )}
       </CubeCamera>
@@ -144,17 +163,23 @@ function RotatableRingStage({
 }
 
 export function RingScene({
-  metal,
-  stone,
+  metal = "yellow",
+  stone = "diamond",
   isLowTier,
   reducedMotion,
   lightTierMode,
+  activePart = null,
+  hoveredPart = null,
+  onHoverPart,
+  onSelectPart,
+  onBackgroundClick,
   onContextLost,
   onFpsReport,
 }: RingSceneProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isOnScreen, setIsOnScreen] = useState(true);
   const [isTabVisible, setIsTabVisible] = useState(true);
+  const [isGrabbing, setIsGrabbing] = useState(false);
 
   // Pause rendering when hero is off-screen
   useEffect(() => {
@@ -199,8 +224,13 @@ export function RingScene({
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-full select-none cursor-grab active:cursor-grabbing"
+      className={`relative w-full h-full select-none ${
+        isGrabbing ? "cursor-grabbing" : "cursor-grab"
+      }`}
       style={{ touchAction: "pan-y" }}
+      onPointerDown={() => setIsGrabbing(true)}
+      onPointerUp={() => setIsGrabbing(false)}
+      onPointerLeave={() => setIsGrabbing(false)}
     >
       <Canvas
         frameloop={shouldRender ? "always" : "never"}
@@ -212,6 +242,7 @@ export function RingScene({
           powerPreference: isLowTier ? "low-power" : "high-performance",
         }}
         onCreated={handleCreated}
+        onPointerMissed={() => onBackgroundClick?.()}
         style={{
           width: "100%",
           height: "100%",
@@ -226,6 +257,10 @@ export function RingScene({
           isLowTier={isLowTier}
           reducedMotion={reducedMotion}
           lightTierMode={lightTierMode}
+          activePart={activePart}
+          hoveredPart={hoveredPart}
+          onHoverPart={onHoverPart}
+          onSelectPart={onSelectPart}
           onFpsReport={onFpsReport}
         />
 

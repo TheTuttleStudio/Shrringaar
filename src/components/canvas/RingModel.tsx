@@ -2,18 +2,23 @@
 
 import React, { useMemo } from "react";
 import * as THREE from "three";
-import { MeshRefractionMaterial } from "@react-three/drei";
+import { MeshRefractionMaterial, useCursor } from "@react-three/drei";
 import { createRoundBrilliantGeometry } from "./gemGeometry";
+import { RingPartId } from "./RingPartDetail";
 
 export type MetalType = "yellow" | "rose" | "white";
 export type StoneType = "diamond" | "emerald" | "ruby" | "sapphire";
 
 interface RingModelProps {
-  metal: MetalType;
-  stone: StoneType;
+  metal?: MetalType;
+  stone?: StoneType;
   isLowTier: boolean;
   envMap: THREE.Texture | THREE.CubeTexture | null;
   lightTierMode?: "physical" | "reflective";
+  activePart?: RingPartId | null;
+  hoveredPart?: RingPartId | null;
+  onHoverPart?: (part: RingPartId | null) => void;
+  onSelectPart?: (part: RingPartId) => void;
 }
 
 // Warm, authentic fine jewellery metal specifications (strictly no karat claims)
@@ -32,16 +37,20 @@ const STONE_CONFIGS: Record<StoneType, { color: string; ior: number; bounces: nu
 };
 
 export function RingModel({
-  metal,
-  stone,
+  metal = "yellow",
+  stone = "diamond",
   isLowTier,
   envMap,
   lightTierMode = "physical",
+  activePart = null,
+  hoveredPart = null,
+  onHoverPart,
+  onSelectPart,
 }: RingModelProps) {
   const metalConfig = METAL_CONFIGS[metal];
   const stoneConfig = STONE_CONFIGS[stone];
 
-  // High-polish metal material for band, basket, and claws
+  // Base metal material for band, basket, and claws
   const metalMaterial = useMemo(() => {
     return new THREE.MeshStandardMaterial({
       color: new THREE.Color(metalConfig.color),
@@ -50,6 +59,18 @@ export function RingModel({
       envMapIntensity: 2.2,
     });
   }, [metalConfig]);
+
+  // Highlighted metal material for hovered/selected parts
+  const highlightedMetalMaterial = useMemo(() => {
+    return new THREE.MeshStandardMaterial({
+      color: new THREE.Color("#F3CA68"),
+      emissive: new THREE.Color("#B8975A"),
+      emissiveIntensity: 0.25,
+      roughness: 0.12,
+      metalness: 0.92,
+      envMapIntensity: 2.4,
+    });
+  }, []);
 
   // Main 57-Facet Brilliant Cut Gemstone Geometry (Scale: 1.15 units diameter)
   const gemGeometry = useMemo(() => {
@@ -93,15 +114,14 @@ export function RingModel({
       // Tapering factor: slightly narrower near head (u ~ Math.PI / 2)
       const distFromTop = Math.abs(u - Math.PI / 2);
       const taper = distFromTop < 0.6 ? 0.78 + 0.22 * (distFromTop / 0.6) : 1.0;
-      const tubeRadiusR = 0.085 * taper; // Radial thickness
-      const tubeRadiusZ = 0.11 * taper;  // Width along finger (Z axis)
+      const tubeRadiusR = 0.085 * taper;
+      const tubeRadiusZ = 0.11 * taper;
 
       for (let j = 0; j <= tubeSegments; j++) {
         const v = (j / tubeSegments) * Math.PI * 2;
         const cosV = Math.cos(v);
         const sinV = Math.sin(v);
 
-        // Position on comfort-fit ring profile
         const r = ringRadius + tubeRadiusR * cosV;
         const x = r * cosU;
         const y = r * sinU;
@@ -143,7 +163,6 @@ export function RingModel({
       const cos = Math.cos(angle);
       const sin = Math.sin(angle);
 
-      // Start from gallery basket collar, curve outwards around girdle, hook inwards over crown
       const p0 = new THREE.Vector3(cos * baseRadius, -0.22, sin * baseRadius);
       const p1 = new THREE.Vector3(cos * (girdleRadius + 0.02), 0.02, sin * (girdleRadius + 0.02));
       const p2 = new THREE.Vector3(cos * crownRadius, 0.16, sin * crownRadius);
@@ -158,7 +177,6 @@ export function RingModel({
   // Shoulder Accent Diamonds placement
   const accentPositions = useMemo(() => {
     const items: { x: number; y: number; z: number; rotZ: number }[] = [];
-    // 3 stones on left shoulder, 3 on right shoulder
     for (let side = -1; side <= 1; side += 2) {
       for (let step = 1; step <= 3; step++) {
         const angleOffset = side * (0.13 + step * 0.075);
@@ -173,7 +191,7 @@ export function RingModel({
     return items;
   }, [ringRadius]);
 
-  // Milgrain bead geometry (single merged buffer for clean, deterministic rendering)
+  // Milgrain bead geometry (single merged buffer for clean rendering)
   const milgrainGeometry = useMemo(() => {
     const positions: number[] = [];
     const sphere = new THREE.SphereGeometry(0.014, 6, 6);
@@ -205,61 +223,137 @@ export function RingModel({
     return geom;
   }, [ringRadius]);
 
+  // Is a particular part selected or hovered?
+  const isShankActive = activePart === "shank" || hoveredPart === "shank";
+  const isShoulderActive = activePart === "shoulder" || hoveredPart === "shoulder";
+  const isBasketActive = activePart === "basket" || hoveredPart === "basket";
+  const isHeadActive = activePart === "head" || hoveredPart === "head";
+
+  // Dynamic cursor: turns to pointer over inspectable jewellery parts
+  useCursor(hoveredPart !== null);
+
   return (
-    // Centering offset: entire ring midpoint sits exactly at (0, 0, 0)
     <group position={[0, -0.16, 0]}>
-      {/* 1. Comfort-fit Ring Band */}
+      {/* 1. Comfort-fit Ring Band (Shank) */}
       <mesh
         geometry={bandGeometry}
-        material={metalMaterial}
+        material={isShankActive ? highlightedMetalMaterial : metalMaterial}
+        onPointerEnter={(e) => {
+          e.stopPropagation();
+          onHoverPart?.("shank");
+        }}
+        onPointerLeave={(e) => {
+          e.stopPropagation();
+          onHoverPart?.(null);
+        }}
+        onClick={(e) => {
+          e.stopPropagation();
+          onSelectPart?.("shank");
+        }}
         castShadow
         receiveShadow
       />
 
-      {/* 2. Shoulder Accent Diamonds */}
-      {accentPositions.map((pos, idx) => (
-        <mesh
-          key={idx}
-          geometry={accentGemGeometry}
-          material={accentStoneMaterial}
-          position={[pos.x, pos.y, pos.z]}
-          rotation={[0, 0, pos.rotZ]}
-        />
-      ))}
-
-      {/* 3. Shoulder Milgrain Beading */}
-      <mesh geometry={milgrainGeometry} material={metalMaterial} />
-
-      {/* 4. Solitaire Head Setting (Basket, Claws & Center Gemstone) */}
-      <group position={[0, ringRadius + 0.22, 0]}>
-        {/* Gallery collar basket under girdle */}
-        <mesh position={[0, -0.14, 0]} rotation={[Math.PI / 2, 0, 0]} material={metalMaterial}>
-          <torusGeometry args={[0.38, 0.026, 12, 32]} />
-        </mesh>
-        <mesh position={[0, -0.26, 0]} rotation={[Math.PI / 2, 0, 0]} material={metalMaterial}>
-          <torusGeometry args={[0.26, 0.022, 12, 32]} />
-        </mesh>
-
-        {/* 6 Curved Claw Prongs */}
-        {prongGeometries.map((geom, idx) => (
-          <mesh key={idx} geometry={geom} material={metalMaterial} />
+      {/* 2. Shoulder Accent Diamonds & Milgrain (Shoulders) */}
+      <group
+        onPointerEnter={(e) => {
+          e.stopPropagation();
+          onHoverPart?.("shoulder");
+        }}
+        onPointerLeave={(e) => {
+          e.stopPropagation();
+          onHoverPart?.(null);
+        }}
+        onClick={(e) => {
+          e.stopPropagation();
+          onSelectPart?.("shoulder");
+        }}
+      >
+        {accentPositions.map((pos, idx) => (
+          <mesh
+            key={idx}
+            geometry={accentGemGeometry}
+            material={accentStoneMaterial}
+            position={[pos.x, pos.y, pos.z]}
+            rotation={[0, 0, pos.rotZ]}
+          />
         ))}
+        <mesh
+          geometry={milgrainGeometry}
+          material={isShoulderActive ? highlightedMetalMaterial : metalMaterial}
+        />
+      </group>
 
-        {/* 5. Center Brilliant Cut Gemstone */}
-        <mesh geometry={gemGeometry} position={[0, 0, 0]}>
+      {/* 3. Solitaire Head Setting (Basket & Center Gemstone) */}
+      <group position={[0, ringRadius + 0.22, 0]}>
+        {/* Gallery collar basket under girdle (Basket) */}
+        <group
+          onPointerEnter={(e) => {
+            e.stopPropagation();
+            onHoverPart?.("basket");
+          }}
+          onPointerLeave={(e) => {
+            e.stopPropagation();
+            onHoverPart?.(null);
+          }}
+          onClick={(e) => {
+            e.stopPropagation();
+            onSelectPart?.("basket");
+          }}
+        >
+          <mesh
+            position={[0, -0.14, 0]}
+            rotation={[Math.PI / 2, 0, 0]}
+            material={isBasketActive ? highlightedMetalMaterial : metalMaterial}
+          >
+            <torusGeometry args={[0.38, 0.026, 12, 32]} />
+          </mesh>
+          <mesh
+            position={[0, -0.26, 0]}
+            rotation={[Math.PI / 2, 0, 0]}
+            material={isBasketActive ? highlightedMetalMaterial : metalMaterial}
+          >
+            <torusGeometry args={[0.26, 0.022, 12, 32]} />
+          </mesh>
+
+          {/* 6 Curved Claw Prongs */}
+          {prongGeometries.map((geom, idx) => (
+            <mesh
+              key={idx}
+              geometry={geom}
+              material={isBasketActive ? highlightedMetalMaterial : metalMaterial}
+            />
+          ))}
+        </group>
+
+        {/* 4. Center Brilliant Cut Gemstone (Head / Crown) */}
+        <mesh
+          geometry={gemGeometry}
+          position={[0, 0, 0]}
+          onPointerEnter={(e) => {
+            e.stopPropagation();
+            onHoverPart?.("head");
+          }}
+          onPointerLeave={(e) => {
+            e.stopPropagation();
+            onHoverPart?.(null);
+          }}
+          onClick={(e) => {
+            e.stopPropagation();
+            onSelectPart?.("head");
+          }}
+        >
           {!isLowTier && envMap ? (
-            /* Desktop High-Tier: Drei MeshRefractionMaterial with BVH ray bounces */
             <MeshRefractionMaterial
               envMap={envMap}
               color={stoneConfig.color}
               ior={stoneConfig.ior}
               bounces={stoneConfig.bounces}
               aberrationStrength={stoneConfig.aberration}
-              fresnel={stoneConfig.fresnel}
+              fresnel={isHeadActive ? 0.6 : stoneConfig.fresnel}
               fastChroma={true}
             />
           ) : lightTierMode === "reflective" ? (
-            /* Light Tier Option B: High-metalness reflective mirror facets */
             <meshStandardMaterial
               color={stoneConfig.color}
               metalness={0.96}
@@ -267,7 +361,6 @@ export function RingModel({
               envMapIntensity={2.8}
             />
           ) : (
-            /* Light Tier Option A: Flat-shaded Physical with transmission */
             <meshPhysicalMaterial
               color={stoneConfig.color}
               roughness={0.02}
