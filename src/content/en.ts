@@ -12,6 +12,7 @@ export const en = {
   },
   cta: {
     bookDemo: "Book a demo",
+    seeHowItWorks: "See how it works",
     exploreCatalogue: "View sample link",
     submitDemo: "Request shop demo",
     contactWhatsApp: "Chat on WhatsApp",
@@ -29,6 +30,52 @@ export const en = {
     secondaryAction: "Explore live demo",
     badgeRating: "Works on any phone. No app to install.",
     imageAlt: "Shringaar Fine Jewellery Solitaire Ring",
+  },
+  howItWorks: {
+    tag: "Simple 4-Step Process",
+    title: "How it works in your shop",
+    subtitle: "No camera gear. No studio lights. Just your counter, your jewellery and your phone.",
+    steps: [
+      {
+        title: "Upload your photos",
+        desc: "Snap photos on your phone right at your counter. No special lights needed.",
+      },
+      {
+        title: "We clean and enhance them",
+        desc: "We fix the light and clean the background. Your gold keeps its true colour.",
+      },
+      {
+        title: "Your catalogue goes live",
+        desc: "Your pieces appear on your shop's own link, ready for customers to browse.",
+      },
+      {
+        title: "Share it with a link or QR",
+        desc: "Place a QR stand at your counter or send the link over WhatsApp.",
+      },
+    ],
+  },
+  enhancement: {
+    tag: "True Gold Restoration",
+    title: "Turn counter snapshots into studio brilliance",
+    line: "Same design. Same colours. Just better light.",
+    sliderAria: "Before and after jewellery photo enhancement slider",
+    beforeLabel: "Phone photo",
+    afterLabel: "Studio cleaned",
+    pairs: {
+      necklace: { title: "Kundan Polki Choker" },
+      bangles: { title: "Temple Gold Kadas" },
+    },
+  },
+  models: {
+    tag: "AI Model Showroom",
+    title: "Models ready to wear your jewellery",
+    line: "Pick a model. See your piece worn, no photoshoot needed.",
+    aiModelBadge: "AI model",
+    list: [
+      { name: "Ananya", style: "Bridal Luxury" },
+      { name: "Meera", style: "Festive Heritage" },
+      { name: "Rhea", style: "Contemporary Chic" },
+    ],
   },
   placeholderSections: {
     howItWorks: {

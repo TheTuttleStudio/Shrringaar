@@ -29,6 +29,45 @@ export interface HeroConfig {
   };
 }
 
+export interface StepItem {
+  id: string;
+  stepNumber: number;
+  titleKey: string;
+  descKey: string;
+}
+
+export interface EnhancementPair {
+  id: string;
+  titleKey: string;
+  before: string;
+  after: string;
+}
+
+export interface EnhancementConfig {
+  aspectRatio: string;
+  tagKey: string;
+  titleKey: string;
+  lineKey: string;
+  pairs: EnhancementPair[];
+}
+
+export interface ModelProfile {
+  id: string;
+  nameKey: string;
+  styleKey: string;
+  portrait: string;
+  worn: string;
+}
+
+export interface ModelsConfig {
+  showcaseAspectRatio: string;
+  thumbnailAspectRatio: string;
+  tagKey: string;
+  titleKey: string;
+  lineKey: string;
+  list: ModelProfile[];
+}
+
 export const siteConfig = {
   name: "Shringaar",
   domain: "shringaar.live",
@@ -53,6 +92,87 @@ export const siteConfig = {
       enableSparkles: true,
     },
   } as HeroConfig,
+  howItWorks: {
+    tagKey: "howItWorks.tag",
+    titleKey: "howItWorks.title",
+    subtitleKey: "howItWorks.subtitle",
+    steps: [
+      {
+        id: "step-1",
+        stepNumber: 1,
+        titleKey: "howItWorks.steps.0.title",
+        descKey: "howItWorks.steps.0.desc",
+      },
+      {
+        id: "step-2",
+        stepNumber: 2,
+        titleKey: "howItWorks.steps.1.title",
+        descKey: "howItWorks.steps.1.desc",
+      },
+      {
+        id: "step-3",
+        stepNumber: 3,
+        titleKey: "howItWorks.steps.2.title",
+        descKey: "howItWorks.steps.2.desc",
+      },
+      {
+        id: "step-4",
+        stepNumber: 4,
+        titleKey: "howItWorks.steps.3.title",
+        descKey: "howItWorks.steps.3.desc",
+      },
+    ] as StepItem[],
+  },
+  enhancement: {
+    aspectRatio: "4 / 3",
+    tagKey: "enhancement.tag",
+    titleKey: "enhancement.title",
+    lineKey: "enhancement.line",
+    pairs: [
+      {
+        id: "necklace",
+        titleKey: "enhancement.pairs.necklace.title",
+        before: "/images/before-1.jpg",
+        after: "/images/after-1.jpg",
+      },
+      {
+        id: "bangles",
+        titleKey: "enhancement.pairs.bangles.title",
+        before: "/images/before-2.jpg",
+        after: "/images/after-2.jpg",
+      },
+    ] as EnhancementPair[],
+  } as EnhancementConfig,
+  models: {
+    showcaseAspectRatio: "4 / 3",
+    thumbnailAspectRatio: "1 / 1",
+    tagKey: "models.tag",
+    titleKey: "models.title",
+    lineKey: "models.line",
+    list: [
+      {
+        id: "ananya",
+        nameKey: "models.list.0.name",
+        styleKey: "models.list.0.style",
+        portrait: "/images/model-1.jpg",
+        worn: "/images/model-1-worn.jpg",
+      },
+      {
+        id: "meera",
+        nameKey: "models.list.1.name",
+        styleKey: "models.list.1.style",
+        portrait: "/images/model-2.jpg",
+        worn: "/images/model-2-worn.jpg",
+      },
+      {
+        id: "rhea",
+        nameKey: "models.list.2.name",
+        styleKey: "models.list.2.style",
+        portrait: "/images/model-3.jpg",
+        worn: "/images/model-3-worn.jpg",
+      },
+    ] as ModelProfile[],
+  } as ModelsConfig,
   nav: [
     { id: "how-it-works", labelKey: "nav.howItWorks", href: "#how-it-works" },
     { id: "catalogue", labelKey: "nav.catalogue", href: "#catalogue" },

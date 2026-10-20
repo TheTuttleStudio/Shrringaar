@@ -8,6 +8,9 @@ import { Reveal } from "@/components/common/Reveal";
 import { useT } from "@/hooks/useT";
 import { Sparkles, ArrowRight, ShieldCheck } from "lucide-react";
 import { HeroVisual } from "@/components/hero/HeroVisual";
+import { HowItWorksSection } from "@/components/sections/HowItWorksSection";
+import { EnhancementSliderSection } from "@/components/sections/EnhancementSliderSection";
+import { ModelsSection } from "@/components/sections/ModelsSection";
 
 export default function Home() {
   const { t, isHindi } = useT();
@@ -80,7 +83,7 @@ export default function Home() {
                   size="lg"
                   className="w-full sm:w-auto"
                 >
-                  {t("cta.exploreCatalogue")}
+                  {t("cta.seeHowItWorks")}
                 </Button>
               </div>
             </Reveal>
@@ -121,7 +124,7 @@ export default function Home() {
                   size="lg"
                   className="w-full"
                 >
-                  {t("cta.exploreCatalogue")}
+                  {t("cta.seeHowItWorks")}
                 </Button>
               </div>
             </Reveal>
@@ -144,37 +147,14 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* How it Works Section */}
-      <Section id="how-it-works" variant="subtle">
-        <Reveal>
-          <div className="max-w-3xl mx-auto text-center">
-            <Heading
-              level={2}
-              badge={t("placeholderSections.howItWorks.badge")}
-              subtitle={t("placeholderSections.howItWorks.subtitle")}
-              align="center"
-            >
-              {t("placeholderSections.howItWorks.title")}
-            </Heading>
-          </div>
-        </Reveal>
-      </Section>
+      {/* 1. How it works Section */}
+      <HowItWorksSection />
 
-      {/* Catalogue Section */}
-      <Section id="catalogue" variant="ivory">
-        <Reveal>
-          <div className="max-w-3xl mx-auto text-center">
-            <Heading
-              level={2}
-              badge={t("placeholderSections.catalogue.badge")}
-              subtitle={t("placeholderSections.catalogue.subtitle")}
-              align="center"
-            >
-              {t("placeholderSections.catalogue.title")}
-            </Heading>
-          </div>
-        </Reveal>
-      </Section>
+      {/* 2. Image Enhancement Before/After Slider Section */}
+      <EnhancementSliderSection />
+
+      {/* 3. AI Models Section */}
+      <ModelsSection />
 
       {/* Try-On Section (Dark demo section) */}
       <Section id="try-on" variant="dark">
