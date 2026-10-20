@@ -23,7 +23,7 @@ export function PhoneFrame({
       <div className="relative w-full h-full rounded-[28px] sm:rounded-[32px] overflow-hidden bg-[#FAF7F2] flex flex-col border border-black/10">
         {/* Dynamic Island / Notch + Phone Speaker */}
         <div className="w-full bg-[#FAF7F2] pt-2 px-4 pb-1.5 flex items-center justify-between border-b border-[#E8E0D5]/60 z-30">
-          <span className="text-[10px] font-mono font-semibold text-[#1C1714]/80">9:41</span>
+          <span className="text-[10px] font-sans font-medium text-[#1C1714]/80">9:41</span>
           
           {/* Speaker pill */}
           <div className="w-16 h-3.5 bg-[#1C1714] rounded-full flex items-center justify-center gap-1.5">
@@ -44,7 +44,7 @@ export function PhoneFrame({
           <div className="flex-1 bg-[#FAF7F2] border border-[#E8E0D5] rounded-lg px-2 py-1 flex items-center justify-between shadow-xs">
             <div className="flex items-center gap-1 min-w-0">
               <Lock className="w-2.5 h-2.5 text-[#91723A] flex-shrink-0" />
-              <span className="text-[10px] font-mono text-[#1C1714] truncate tracking-tight font-medium">
+              <span className="text-[10px] font-sans text-[#1C1714] truncate tracking-tight font-medium">
                 {url}
               </span>
             </div>

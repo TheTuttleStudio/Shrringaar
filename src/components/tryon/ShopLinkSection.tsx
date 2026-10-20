@@ -109,7 +109,7 @@ export function ShopLinkSection() {
             {/* Browser Controls / Protocol */}
             <div className="flex items-center gap-1.5 pl-1 text-[#8A7F77]">
               <Globe className="w-4 h-4 text-[#B8975A]" />
-              <span className="text-xs font-mono text-[#8A7F77] hidden sm:inline">
+              <span className="text-xs font-sans text-[#8A7F77] hidden sm:inline">
                 https://
               </span>
               <Lock className="w-3.5 h-3.5 text-[#91723A]" />
@@ -117,7 +117,7 @@ export function ShopLinkSection() {
 
             {/* Typewriter Input URL Pill */}
             <div className="flex-1 bg-[#FAF7F2] border border-[#E8E0D5] rounded-xl px-3 py-1.5 flex items-center min-w-0">
-              <span className="text-sm sm:text-base font-mono font-medium text-[#1C1714] truncate">
+              <span className="text-sm sm:text-base font-sans font-medium text-[#1C1714] truncate">
                 {displayedText}
               </span>
               {/* Blinking Cursor (stops under reduced motion or once complete) */}
@@ -156,7 +156,7 @@ export function ShopLinkSection() {
             >
               {/* Top subtle live tag */}
               <div className="flex items-center justify-between w-full">
-                <span className="text-[9px] font-mono text-[#8A7F77] tracking-wider uppercase">
+                <span className="text-[9px] font-sans font-medium text-[#8A7F77] tracking-wider uppercase">
                   Catalogue
                 </span>
                 <span className="w-1.5 h-1.5 rounded-full bg-[#B8975A]/60 group-hover:bg-[#B8975A]" />

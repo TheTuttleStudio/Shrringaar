@@ -31,8 +31,9 @@ export function TryOnStorySection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const pinWrapperRef = useRef<HTMLDivElement>(null);
 
-  // Beat screens refs for GSAP timeline
-  const screen1Ref = useRef<HTMLDivElement>(null);
+  // Stage refs for GSAP timeline
+  const counterStageRef = useRef<HTMLDivElement>(null);
+  const phoneWrapperRef = useRef<HTMLDivElement>(null);
   const screen2Ref = useRef<HTMLDivElement>(null);
   const screen3Ref = useRef<HTMLDivElement>(null);
   const screen4Ref = useRef<HTMLDivElement>(null);
@@ -57,7 +58,7 @@ export function TryOnStorySection() {
     const ctx = gsap.context(() => {
       // Create master scrubbed timeline
       const isMobile = window.innerWidth < 768;
-      const scrollDistance = isMobile ? "+=220%" : "+=300%";
+      const scrollDistance = isMobile ? "+=230%" : "+=300%";
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -70,11 +71,11 @@ export function TryOnStorySection() {
           invalidateOnRefresh: true, // Recalculates start/end on resize & rotation
           onUpdate: (self) => {
             const p = self.progress;
-            if (p < 0.25) {
+            if (p < 0.22) {
               setActiveBeat(0);
-            } else if (p < 0.52) {
+            } else if (p < 0.50) {
               setActiveBeat(1);
-            } else if (p < 0.78) {
+            } else if (p < 0.76) {
               setActiveBeat(2);
             } else {
               setActiveBeat(3);
@@ -83,33 +84,48 @@ export function TryOnStorySection() {
         },
       });
 
-      // Initial States: only transform and opacity
-      gsap.set(screen1Ref.current, { opacity: 1, scale: 1 });
-      gsap.set(screen2Ref.current, { opacity: 0, scale: 0.96 });
+      if (typeof window !== "undefined") {
+        (window as any).__tryOnST = tl.scrollTrigger;
+      }
+
+      // Initial States: Beat 1 counter visible, phone hidden down below
+      gsap.set(counterStageRef.current, { opacity: 1, scale: 1, y: 0 });
+      gsap.set(phoneWrapperRef.current, {
+        opacity: 0,
+        yPercent: 45,
+        scale: 0.96,
+        pointerEvents: "none",
+      });
+      gsap.set(screen2Ref.current, { opacity: 1, scale: 1 });
       gsap.set(screen3Ref.current, { opacity: 0, scale: 0.96 });
       gsap.set(screen4Ref.current, { opacity: 0, scale: 0.96 });
 
       // Sequence: Beat 1 -> Beat 2
-      tl.to(screen1Ref.current, {
+      // Counter stand fades out, Phone slides up from bottom
+      tl.to(counterStageRef.current, {
         opacity: 0,
-        scale: 0.95,
+        scale: 0.93,
+        y: -20,
         duration: 0.8,
         ease: "power2.inOut",
       })
         .to(
-          screen2Ref.current,
+          phoneWrapperRef.current,
           {
             opacity: 1,
+            yPercent: 0,
             scale: 1,
             duration: 0.8,
-            ease: "power2.inOut",
+            ease: "power2.out",
+            pointerEvents: "auto",
           },
-          "<0.2"
+          "<0.1"
         )
         // Hold Beat 2 briefly
         .to({}, { duration: 0.5 })
 
         // Sequence: Beat 2 -> Beat 3
+        // Screen 2 fades out, Screen 3 (photo drop) fades in
         .to(screen2Ref.current, {
           opacity: 0,
           scale: 0.95,
@@ -130,6 +146,7 @@ export function TryOnStorySection() {
         .to({}, { duration: 0.5 })
 
         // Sequence: Beat 3 -> Beat 4
+        // Screen 3 fades out, Screen 4 (result) fades in
         .to(screen3Ref.current, {
           opacity: 0,
           scale: 0.95,
@@ -157,6 +174,9 @@ export function TryOnStorySection() {
 
     return () => {
       clearTimeout(timer);
+      if (typeof window !== "undefined") {
+        delete (window as any).__tryOnST;
+      }
       ctx.revert();
     };
   }, [reducedMotion]);
@@ -251,9 +271,9 @@ export function TryOnStorySection() {
                 })}
               </div>
 
-              {/* Active Step Caption Box */}
+              {/* Active Step Caption Box (Manrope font-sans) */}
               <div className="min-h-[88px] flex flex-col justify-center">
-                <span className="text-[11px] font-mono uppercase tracking-wider text-[#B8975A] font-semibold mb-1">
+                <span className="text-[11px] font-sans uppercase tracking-wider text-[#B8975A] font-semibold mb-1">
                   0{activeBeat + 1} • {t(config.beats[activeBeat].labelKey)}
                 </span>
                 <p className="text-base sm:text-lg font-sans font-light text-[#EAE3D9] leading-relaxed transition-opacity duration-300">
@@ -275,43 +295,51 @@ export function TryOnStorySection() {
           </div>
 
           {/* 
-            Phone Center Display:
-            Houses the 4 Beat screens with GPU-accelerated opacity/transform crossfading
+            Center Stage:
+            Houses Beat 1 (Counter Stand with SVG glass top) and Beats 2-4 (Phone Frame sliding up in Beat 2)
           */}
           <div className="w-full lg:col-span-6 flex justify-center items-center z-10 my-auto">
-            <PhoneFrame url={config.sampleUrl}>
-              {/* Screen 1: Counter Stand with QR */}
+            <div className="relative w-[clamp(250px,75vw,290px)] h-[clamp(360px,50svh,410px)] lg:w-[320px] lg:h-[540px] flex items-center justify-center">
+              {/* Beat 1: Counter Stand (Visible in Beat 1, slides out in Beat 2) */}
               <div
-                ref={screen1Ref}
-                className="absolute inset-0 w-full h-full will-change-transform will-change-opacity"
+                ref={counterStageRef}
+                className="absolute inset-0 w-full h-full flex items-center justify-center will-change-transform will-change-opacity"
               >
                 <Beat1CounterStand />
               </div>
 
-              {/* Screen 2: Phone Camera Scanning */}
+              {/* Beats 2-4: Phone Frame (Enters in Beat 2, slides up from bottom) */}
               <div
-                ref={screen2Ref}
-                className="absolute inset-0 w-full h-full will-change-transform will-change-opacity"
+                ref={phoneWrapperRef}
+                className="absolute inset-0 w-full h-full flex items-center justify-center will-change-transform will-change-opacity"
               >
-                <Beat2PhoneScan />
-              </div>
+                <PhoneFrame url={config.sampleUrl}>
+                  {/* Screen 2: Phone Camera Scanning */}
+                  <div
+                    ref={screen2Ref}
+                    className="absolute inset-0 w-full h-full will-change-transform will-change-opacity"
+                  >
+                    <Beat2PhoneScan />
+                  </div>
 
-              {/* Screen 3: Customer Photo Drop & Earring Picker */}
-              <div
-                ref={screen3Ref}
-                className="absolute inset-0 w-full h-full will-change-transform will-change-opacity"
-              >
-                <Beat3PhotoDrop />
-              </div>
+                  {/* Screen 3: Customer Photo Drop & Earring Picker */}
+                  <div
+                    ref={screen3Ref}
+                    className="absolute inset-0 w-full h-full will-change-transform will-change-opacity"
+                  >
+                    <Beat3PhotoDrop />
+                  </div>
 
-              {/* Screen 4: Result with Earring & Sparkles */}
-              <div
-                ref={screen4Ref}
-                className="absolute inset-0 w-full h-full will-change-transform will-change-opacity"
-              >
-                <Beat4Result />
+                  {/* Screen 4: Result with Earring & Sparkles */}
+                  <div
+                    ref={screen4Ref}
+                    className="absolute inset-0 w-full h-full will-change-transform will-change-opacity"
+                  >
+                    <Beat4Result />
+                  </div>
+                </PhoneFrame>
               </div>
-            </PhoneFrame>
+            </div>
           </div>
 
           {/* 

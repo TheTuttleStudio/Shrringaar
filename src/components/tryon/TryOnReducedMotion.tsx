@@ -49,9 +49,9 @@ export function TryOnReducedMotion() {
               key={beat.id}
               className="flex flex-col items-center bg-[#251F1C] border border-[#3D3530] rounded-3xl p-6 shadow-md"
             >
-              {/* Step Badge & Caption */}
+              {/* Step Badge & Caption (Manrope font-sans) */}
               <div className="text-center mb-6 w-full">
-                <span className="inline-block px-3 py-1 rounded-full bg-[#B8975A]/20 border border-[#B8975A]/40 text-xs font-mono font-medium text-[#E5D4B3] mb-2">
+                <span className="inline-block px-3 py-1 rounded-full bg-[#B8975A]/20 border border-[#B8975A]/40 text-xs font-sans font-medium text-[#E5D4B3] mb-2">
                   0{idx + 1} • {t(beat.labelKey)}
                 </span>
                 <p className="text-sm font-sans font-light text-[#EAE3D9] max-w-sm mx-auto leading-relaxed">
@@ -59,10 +59,16 @@ export function TryOnReducedMotion() {
                 </p>
               </div>
 
-              {/* Still Phone Frame */}
-              <PhoneFrame url={config.sampleUrl}>
-                {beatComponents[idx]}
-              </PhoneFrame>
+              {/* Card Visual: Beat 1 is standalone Counter Stand; Beats 2-4 use PhoneFrame */}
+              {idx === 0 ? (
+                <div className="w-full max-w-[310px] h-[520px] flex items-center justify-center rounded-[32px] bg-[#1C1714] border border-[#3D3530] p-4">
+                  <Beat1CounterStand />
+                </div>
+              ) : (
+                <PhoneFrame url={config.sampleUrl}>
+                  {beatComponents[idx]}
+                </PhoneFrame>
+              )}
             </div>
           ))}
         </div>
