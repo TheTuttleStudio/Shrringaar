@@ -33,9 +33,8 @@ export function Header() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const logoFont = isHindi
-    ? "font-[family-name:var(--font-tiro-hindi)]"
-    : "font-[family-name:var(--font-cormorant)]";
+  // Logo always uses Cormorant Garamond in all languages
+  const logoFont = "font-[family-name:var(--font-cormorant)]";
 
   return (
     <header
@@ -55,8 +54,7 @@ export function Header() {
         >
           <span
             className={cn(
-              logoFont,
-              "text-2xl sm:text-3xl font-light tracking-wide text-[#1C1714] transition-colors group-hover:text-[#B8975A]"
+              "font-logo text-2xl sm:text-3xl font-light tracking-wide text-[#1C1714] transition-colors group-hover:text-[#B8975A]"
             )}
           >
             {siteConfig.name}
@@ -84,29 +82,33 @@ export function Header() {
         <div className="hidden sm:flex items-center gap-5">
           {/* Quiet Language Toggle */}
           <div
-            className="flex items-center p-0.5 rounded-full border border-[#E8E0D5] bg-[#FFFDFB]/60 text-xs font-sans"
+            className="relative flex items-center p-0.5 rounded-full border border-[#E8E0D5] bg-[#FFFDFB] text-xs font-sans select-none"
             role="group"
             aria-label="Language selection"
           >
             <button
+              type="button"
               onClick={() => setLanguage("en")}
               className={cn(
-                "px-2.5 py-1 rounded-full transition-all duration-200",
+                "relative z-10 px-2.5 py-1 rounded-full transition-all duration-200 font-medium",
                 language === "en"
-                  ? "bg-[#1C1714] text-[#FAF7F2] font-medium"
+                  ? "bg-[#1C1714] text-[#FAF7F2] shadow-sm"
                   : "text-[#6B625B] hover:text-[#1C1714]"
               )}
+              aria-pressed={language === "en"}
             >
               EN
             </button>
             <button
+              type="button"
               onClick={() => setLanguage("hi")}
               className={cn(
-                "px-2.5 py-1 rounded-full transition-all duration-200",
+                "relative z-10 px-2.5 py-1 rounded-full transition-all duration-200 font-medium",
                 language === "hi"
-                  ? "bg-[#1C1714] text-[#FAF7F2] font-medium"
+                  ? "bg-[#1C1714] text-[#FAF7F2] shadow-sm"
                   : "text-[#6B625B] hover:text-[#1C1714]"
               )}
+              aria-pressed={language === "hi"}
             >
               हिंदी
             </button>

@@ -10,9 +10,8 @@ export function Footer() {
   const { t, isHindi } = useT();
   const currentYear = 2026;
 
-  const logoFont = isHindi
-    ? "font-[family-name:var(--font-tiro-hindi)]"
-    : "font-[family-name:var(--font-cormorant)]";
+  // Logo always uses Cormorant Garamond in all languages
+  const logoFont = "font-[family-name:var(--font-cormorant)]";
 
   return (
     <footer className="w-full bg-[#F5EFE6] text-[#1C1714] border-t border-[#E8E0D5] pt-16 pb-12 transition-colors duration-300">
@@ -23,8 +22,7 @@ export function Footer() {
             <div className="flex items-baseline gap-1.5">
               <span
                 className={cn(
-                  logoFont,
-                  "text-3xl font-light tracking-wide text-[#1C1714]"
+                  "font-logo text-3xl font-light tracking-wide text-[#1C1714]"
                 )}
               >
                 {siteConfig.name}

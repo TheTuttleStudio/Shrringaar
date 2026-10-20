@@ -27,7 +27,7 @@ export const en = {
     headingSuffix: "in seconds.",
     description: "Take photos on your phone. Shringaar cleans reflections, preserves authentic gold tones, and publishes an instant live catalogue with customer try-on.",
     secondaryAction: "Explore live demo",
-    badgeRating: "Trusted by fine jewellery stores across Jaipur, Mumbai, & Surat",
+    badgeRating: "Works on any phone. No app to install.",
   },
   placeholderSections: {
     howItWorks: {
@@ -101,7 +101,7 @@ export const en = {
     contact: "Contact",
     phone: "+91 98200 12345",
     email: "namaste@shringaar.live",
-    location: "Zaveri Bazaar, Mumbai • Johari Bazaar, Jaipur",
+    location: "Built with reverence for fine Indian jewellery craft",
     rights: "All rights reserved.",
     privacy: "Privacy Policy",
     terms: "Terms of Service",

@@ -52,11 +52,16 @@ html[lang="hi"] body {
   font-family: var(--font-noto-hindi), system-ui, sans-serif;
 }
 
-html[lang="hi"] h1,
-html[lang="hi"] h2,
-html[lang="hi"] h3,
-html[lang="hi"] .font-serif-heading {
+html[lang="hi"] h1:not(.font-logo),
+html[lang="hi"] h2:not(.font-logo),
+html[lang="hi"] h3:not(.font-logo),
+html[lang="hi"] .font-serif-heading:not(.font-logo) {
   font-family: var(--font-tiro-hindi), serif;
+  letter-spacing: normal !important;
+}
+
+.font-logo {
+  font-family: var(--font-cormorant), "Cormorant Garamond", Georgia, serif !important;
 }
 
 /* Subtle luxury selection */

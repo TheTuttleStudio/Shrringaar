@@ -41,13 +41,20 @@ export default function Home() {
               <span className="italic font-normal text-[#91723A]">
                 {t("hero.headingAccent")}
               </span>{" "}
-              {t("hero.headingSuffix")}
+              {isHindi ? (
+                <span>
+                  {t("hero.headingSuffix").replace("।", "")}
+                  <span className="inline-block -ml-[0.22em]">।</span>
+                </span>
+              ) : (
+                t("hero.headingSuffix")
+              )}
             </h1>
           </Reveal>
 
           {/* Simple, calm, human body copy */}
-          <Reveal mode="mount" delay={0.2}>
-            <p className="text-base sm:text-lg md:text-xl font-sans font-light text-[#5C534D] max-w-2xl leading-relaxed">
+          <Reveal mode="mount" delay={0.2} className="w-full flex justify-center">
+            <p className="text-base sm:text-lg md:text-xl font-sans font-light text-[#5C534D] max-w-2xl mx-auto leading-relaxed text-center">
               {t("hero.description")}
             </p>
           </Reveal>
