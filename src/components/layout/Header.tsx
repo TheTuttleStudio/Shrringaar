@@ -45,7 +45,7 @@ export function Header() {
           : "bg-[#FAF7F2]/80 backdrop-blur-sm border-b border-[#E8E0D5]/40"
       )}
     >
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 h-20 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 h-16 lg:h-20 flex items-center justify-between">
         {/* Brand Logo */}
         <Link
           href="/"

@@ -11,6 +11,8 @@ import { HeroVisual } from "@/components/hero/HeroVisual";
 import { HowItWorksSection } from "@/components/sections/HowItWorksSection";
 import { EnhancementSliderSection } from "@/components/sections/EnhancementSliderSection";
 import { ModelsSection } from "@/components/sections/ModelsSection";
+import { TryOnStorySection } from "@/components/tryon/TryOnStorySection";
+import { ShopLinkSection } from "@/components/tryon/ShopLinkSection";
 
 export default function Home() {
   const { t, isHindi } = useT();
@@ -156,22 +158,11 @@ export default function Home() {
       {/* 3. AI Models Section */}
       <ModelsSection />
 
-      {/* Try-On Section (Dark demo section) */}
-      <Section id="try-on" variant="dark">
-        <Reveal>
-          <div className="max-w-3xl mx-auto text-center">
-            <Heading
-              level={2}
-              dark
-              badge={t("placeholderSections.tryOn.badge")}
-              subtitle={t("placeholderSections.tryOn.subtitle")}
-              align="center"
-            >
-              {t("placeholderSections.tryOn.title")}
-            </Heading>
-          </div>
-        </Reveal>
-      </Section>
+      {/* 4. Interactive Customer Try-On Pinned Dark Story */}
+      <TryOnStorySection />
+
+      {/* 5. The Shop's Own Link Section with Typewriter URL */}
+      <ShopLinkSection />
 
       {/* Pricing Section */}
       <Section id="pricing" variant="ivory">

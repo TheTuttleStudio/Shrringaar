@@ -68,6 +68,45 @@ export interface ModelsConfig {
   list: ModelProfile[];
 }
 
+export interface TryOnBeat {
+  id: string;
+  stepNumber: number;
+  labelKey: string;
+  captionKey: string;
+}
+
+export interface TryOnConfig {
+  tagKey: string;
+  titleKey: string;
+  closingLineKey: string;
+  sampleSlug: string;
+  sampleUrl: string;
+  portraitAspectRatio: string;
+  qrImage: string;
+  customerImage: string;
+  resultImage: string;
+  earrings: Array<{
+    id: string;
+    nameKey: string;
+    image: string;
+  }>;
+  beats: TryOnBeat[];
+}
+
+export interface ShopLinkConfig {
+  tagKey: string;
+  titleKey: string;
+  lineKey: string;
+  sampleSlug: string;
+  sampleUrl: string;
+  items: Array<{
+    id: string;
+    titleKey: string;
+    image: string;
+    ratio: string;
+  }>;
+}
+
 export const siteConfig = {
   name: "Shringaar",
   domain: "shringaar.live",
@@ -173,6 +212,105 @@ export const siteConfig = {
       },
     ] as ModelProfile[],
   } as ModelsConfig,
+  tryOn: {
+    tagKey: "tryOn.tag",
+    titleKey: "tryOn.title",
+    closingLineKey: "tryOn.closingLine",
+    sampleSlug: "yourshop",
+    sampleUrl: "yourshop.shringaar.live",
+    portraitAspectRatio: "4 / 5",
+    qrImage: "/images/qr-sample.svg",
+    customerImage: "/images/tryon-customer.jpg",
+    resultImage: "/images/tryon-result.jpg",
+    earrings: [
+      {
+        id: "jhumka",
+        nameKey: "tryOn.ui.earring1",
+        image: "/images/earring-1.png",
+      },
+      {
+        id: "chandbali",
+        nameKey: "tryOn.ui.earring2",
+        image: "/images/earring-2.png",
+      },
+      {
+        id: "studs",
+        nameKey: "tryOn.ui.earring3",
+        image: "/images/earring-3.png",
+      },
+    ],
+    beats: [
+      {
+        id: "beat-1",
+        stepNumber: 1,
+        labelKey: "tryOn.steps.step1",
+        captionKey: "tryOn.captions.beat1",
+      },
+      {
+        id: "beat-2",
+        stepNumber: 2,
+        labelKey: "tryOn.steps.step2",
+        captionKey: "tryOn.captions.beat2",
+      },
+      {
+        id: "beat-3",
+        stepNumber: 3,
+        labelKey: "tryOn.steps.step3",
+        captionKey: "tryOn.captions.beat3",
+      },
+      {
+        id: "beat-4",
+        stepNumber: 4,
+        labelKey: "tryOn.steps.step4",
+        captionKey: "tryOn.captions.beat4",
+      },
+    ],
+  } as TryOnConfig,
+  shopLink: {
+    tagKey: "shopLink.tag",
+    titleKey: "shopLink.title",
+    lineKey: "shopLink.line",
+    sampleSlug: "yourshop",
+    sampleUrl: "yourshop.shringaar.live",
+    items: [
+      {
+        id: "item-1",
+        titleKey: "shopLink.items.item1",
+        image: "/images/after-1.jpg",
+        ratio: "4/3",
+      },
+      {
+        id: "item-2",
+        titleKey: "shopLink.items.item2",
+        image: "/images/after-2.jpg",
+        ratio: "4/3",
+      },
+      {
+        id: "item-3",
+        titleKey: "shopLink.items.item3",
+        image: "/images/earring-1.png",
+        ratio: "1/1",
+      },
+      {
+        id: "item-4",
+        titleKey: "shopLink.items.item4",
+        image: "/images/earring-2.png",
+        ratio: "1/1",
+      },
+      {
+        id: "item-5",
+        titleKey: "shopLink.items.item5",
+        image: "/images/earring-3.png",
+        ratio: "1/1",
+      },
+      {
+        id: "item-6",
+        titleKey: "shopLink.items.item6",
+        image: "/images/hero-ring.webp",
+        ratio: "1/1",
+      },
+    ],
+  } as ShopLinkConfig,
   nav: [
     { id: "how-it-works", labelKey: "nav.howItWorks", href: "#how-it-works" },
     { id: "catalogue", labelKey: "nav.catalogue", href: "#catalogue" },

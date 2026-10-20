@@ -77,6 +77,48 @@ export const en = {
       { name: "Rhea", style: "Contemporary Chic" },
     ],
   },
+  tryOn: {
+    tag: "Interactive Try-On",
+    title: "Your customers wear your jewellery on their phone",
+    closingLine: "Try it on, right from your phone.",
+    captions: {
+      beat1: "Place a QR stand at your counter. Customers scan it with their camera.",
+      beat2: "Your shop link opens right away. No app to download.",
+      beat3: "They take a quick selfie and tap any piece they like.",
+      beat4: "They see how it looks on them, right there at the counter.",
+    },
+    steps: {
+      step1: "Counter QR",
+      step2: "Instant Link",
+      step3: "Customer Photo",
+      step4: "Live Result",
+    },
+    ui: {
+      addPhoto: "Add your photo",
+      takeSelfie: "Snap a photo",
+      choosePiece: "Tap an earring to try",
+      earring1: "Kundan Jhumka",
+      earring2: "Chandbali",
+      earring3: "Solitaire Studs",
+      resultBadge: "Try-on Result",
+      scanInstruction: "Point your phone camera at the stand",
+      scanning: "Opening yourshop.shringaar.live...",
+    },
+  },
+  shopLink: {
+    tag: "Your Digital Counter",
+    title: "Your shop's own link, always live",
+    line: "Your own link. Show it to any customer, anywhere.",
+    urlAria: "Your shop's live digital counter address: yourshop.shringaar.live",
+    items: {
+      item1: "Kundan Polki Choker",
+      item2: "Temple Gold Kadas",
+      item3: "Royal Gold Jhumkas",
+      item4: "Heritage Chandbalis",
+      item5: "Solitaire Diamond Studs",
+      item6: "Solitaire Gold Ring",
+    },
+  },
   placeholderSections: {
     howItWorks: {
       badge: "Simple 3-Step Process",
