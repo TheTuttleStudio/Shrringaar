@@ -7,9 +7,10 @@ import { Button } from "@/components/common/Button";
 import { Reveal } from "@/components/common/Reveal";
 import { useT } from "@/hooks/useT";
 import { Sparkles, ArrowRight, ShieldCheck } from "lucide-react";
+import { HeroJewelleryStage } from "@/components/canvas/HeroJewelleryStage";
 
 export default function Home() {
-  const { t, content, isHindi } = useT();
+  const { t, isHindi } = useT();
 
   const serifHeadingFont = isHindi
     ? "font-[family-name:var(--font-tiro-hindi)]"
@@ -21,74 +22,125 @@ export default function Home() {
       <Section
         id="hero"
         variant="ivory"
-        className="pt-12 sm:pt-24 md:pt-36 pb-16 sm:pb-24"
+        className="pt-6 sm:pt-12 md:pt-16 lg:pt-20 pb-16 sm:pb-24 overflow-hidden"
       >
-        <div className="flex flex-col items-center text-center max-w-4xl mx-auto space-y-6 sm:space-y-8">
-          {/* Subtle quiet luxury badge */}
-          <Reveal mode="mount" delay={0.05}>
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#B8975A]/10 border border-[#B8975A]/25 text-[#91723A] text-xs font-sans tracking-wide">
-              <Sparkles className="w-3.5 h-3.5 text-[#B8975A]" />
-              <span>{t("hero.tag")}</span>
-            </div>
-          </Reveal>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 xl:gap-16 items-center">
+          {/* Left Column: Heading & Content on Desktop */}
+          <div className="lg:col-span-6 xl:col-span-6 flex flex-col items-center lg:items-start text-center lg:text-left space-y-4 sm:space-y-6 order-1">
+            {/* Subtle quiet luxury badge */}
+            <Reveal mode="mount" delay={0.05}>
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#B8975A]/10 border border-[#B8975A]/25 text-[#91723A] text-xs font-sans tracking-wide">
+                <Sparkles className="w-3.5 h-3.5 text-[#B8975A]" />
+                <span>{t("hero.tag")}</span>
+              </div>
+            </Reveal>
 
-          {/* Cormorant Garamond Heading with italic accent word */}
-          <Reveal mode="mount" delay={0.12}>
-            <h1
-              className={`text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-tight leading-[1.16] sm:leading-[1.14] text-[#1C1714] ${serifHeadingFont}`}
-            >
-              {t("hero.headingPrefix")}{" "}
-              <span className="italic font-normal text-[#91723A]">
-                {t("hero.headingAccent")}
-              </span>{" "}
-              {isHindi ? (
-                <span>
-                  {t("hero.headingSuffix").replace("।", "")}
-                  <span className="inline-block -ml-[0.22em]">।</span>
-                </span>
-              ) : (
-                t("hero.headingSuffix")
-              )}
-            </h1>
-          </Reveal>
-
-          {/* Simple, calm, human body copy */}
-          <Reveal mode="mount" delay={0.2} className="w-full flex justify-center">
-            <p className="text-base sm:text-lg md:text-xl font-sans font-light text-[#5C534D] max-w-2xl mx-auto leading-relaxed text-center">
-              {t("hero.description")}
-            </p>
-          </Reveal>
-
-          {/* Primary CTA: "Book a demo" */}
-          <Reveal mode="mount" delay={0.28}>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-2 sm:pt-4 w-full sm:w-auto">
-              <Button
-                href="#book-demo"
-                variant="primary"
-                size="lg"
-                className="w-full sm:w-auto"
+            {/* Cormorant Garamond / Tiro Devanagari Heading with italic accent */}
+            <Reveal mode="mount" delay={0.12}>
+              <h1
+                className={`text-3xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-light tracking-tight leading-[1.16] sm:leading-[1.12] text-[#1C1714] ${serifHeadingFont}`}
               >
-                <span>{t("cta.bookDemo")}</span>
-                <ArrowRight className="w-4 h-4" />
-              </Button>
-              <Button
-                href="#how-it-works"
-                variant="secondary"
-                size="lg"
-                className="w-full sm:w-auto"
-              >
-                {t("cta.exploreCatalogue")}
-              </Button>
-            </div>
-          </Reveal>
+                {t("hero.headingPrefix")}{" "}
+                <span className="italic font-normal text-[#91723A]">
+                  {t("hero.headingAccent")}
+                </span>{" "}
+                {isHindi ? (
+                  <span>
+                    {t("hero.headingSuffix").replace("।", "")}
+                    <span className="inline-block -ml-[0.22em]">।</span>
+                  </span>
+                ) : (
+                  t("hero.headingSuffix")
+                )}
+              </h1>
+            </Reveal>
 
-          {/* Trust badge */}
-          <Reveal mode="mount" delay={0.35}>
-            <div className="pt-4 sm:pt-6 flex items-center justify-center gap-2 text-xs font-sans text-[#8A7F77]">
-              <ShieldCheck className="w-4 h-4 text-[#B8975A]" />
-              <span>{t("hero.badgeRating")}</span>
-            </div>
-          </Reveal>
+            {/* Desktop Description */}
+            <Reveal mode="mount" delay={0.2} className="hidden lg:block">
+              <p className="text-base sm:text-lg md:text-xl font-sans font-light text-[#5C534D] max-w-xl leading-relaxed">
+                {t("hero.description")}
+              </p>
+            </Reveal>
+
+            {/* Desktop CTAs */}
+            <Reveal mode="mount" delay={0.26} className="hidden lg:block">
+              <div className="flex items-center gap-3.5 pt-1 w-full sm:w-auto">
+                <Button
+                  href="#book-demo"
+                  variant="primary"
+                  size="lg"
+                  className="w-full sm:w-auto font-normal shadow-sm"
+                >
+                  <span>{t("cta.bookDemo")}</span>
+                  <ArrowRight className="w-4 h-4 ml-1" />
+                </Button>
+                <Button
+                  href="#how-it-works"
+                  variant="secondary"
+                  size="lg"
+                  className="w-full sm:w-auto"
+                >
+                  {t("cta.exploreCatalogue")}
+                </Button>
+              </div>
+            </Reveal>
+
+            {/* Desktop Trust Badge */}
+            <Reveal mode="mount" delay={0.3} className="hidden lg:block">
+              <div className="pt-1 flex items-center justify-start gap-2 text-xs font-sans text-[#8A7F77]">
+                <ShieldCheck className="w-4 h-4 text-[#B8975A]" />
+                <span>{t("hero.badgeRating")}</span>
+              </div>
+            </Reveal>
+          </div>
+
+          {/* Right Column on Desktop / Center on Mobile: Single 3D Ring Stage */}
+          <div className="lg:col-span-6 xl:col-span-6 flex justify-center order-2 w-full my-1 sm:my-2 lg:my-0">
+            <Reveal mode="mount" delay={0.16}>
+              <HeroJewelleryStage />
+            </Reveal>
+          </div>
+
+          {/* Mobile Only: CTA, Description, Trust (Right below the ring stage) */}
+          <div className="lg:hidden flex flex-col items-center text-center space-y-4 order-3 w-full">
+            {/* Immediate "Book a demo" button visible above/at the fold */}
+            <Reveal mode="mount" delay={0.22} className="w-full">
+              <div className="flex flex-col sm:flex-row items-center gap-2.5 w-full">
+                <Button
+                  href="#book-demo"
+                  variant="primary"
+                  size="lg"
+                  className="w-full font-normal shadow-sm"
+                >
+                  <span>{t("cta.bookDemo")}</span>
+                  <ArrowRight className="w-4 h-4 ml-1" />
+                </Button>
+                <Button
+                  href="#how-it-works"
+                  variant="secondary"
+                  size="lg"
+                  className="w-full"
+                >
+                  {t("cta.exploreCatalogue")}
+                </Button>
+              </div>
+            </Reveal>
+
+            {/* Body Copy */}
+            <Reveal mode="mount" delay={0.26}>
+              <p className="text-sm sm:text-base font-sans font-light text-[#5C534D] max-w-xl leading-relaxed">
+                {t("hero.description")}
+              </p>
+            </Reveal>
+
+            {/* Trust Badge */}
+            <Reveal mode="mount" delay={0.3}>
+              <div className="pt-1 flex items-center justify-center gap-2 text-xs font-sans text-[#8A7F77]">
+                <ShieldCheck className="w-4 h-4 text-[#B8975A]" />
+                <span>{t("hero.badgeRating")}</span>
+              </div>
+            </Reveal>
+          </div>
         </div>
       </Section>
 
@@ -189,7 +241,7 @@ export default function Home() {
             <div className="pt-4 flex justify-center">
               <Button href="#book-demo" variant="primary" size="lg">
                 <span>{t("cta.bookDemo")}</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 ml-1" />
               </Button>
             </div>
           </div>

@@ -20,6 +20,22 @@ export const en = {
     languageToggle: "हिंदी",
     bookDemo: "Book a demo",
   },
+  swatches: {
+    metals: {
+      title: "Metal",
+      yellowGold: "Yellow gold",
+      roseGold: "Rose gold",
+      whiteGold: "White gold",
+    },
+    stones: {
+      title: "Gemstone",
+      diamond: "Solitaire diamond",
+      emerald: "Royal emerald",
+      ruby: "Pigeon blood ruby",
+      sapphire: "Blue sapphire",
+    },
+    dragHint: "Drag horizontally to inspect",
+  },
   hero: {
     tag: "Built for Indian Jewellers",
     headingPrefix: "Turn simple counter photos into",

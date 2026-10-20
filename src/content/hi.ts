@@ -22,6 +22,22 @@ export const hi: ContentType = {
     languageToggle: "English",
     bookDemo: "डेमो बुक करें",
   },
+  swatches: {
+    metals: {
+      title: "धातु",
+      yellowGold: "पीला सोना",
+      roseGold: "गुलाबी सोना",
+      whiteGold: "सफेद सोना",
+    },
+    stones: {
+      title: "रत्न",
+      diamond: "सॉलिटेयर हीरा",
+      emerald: "शाही पन्ना",
+      ruby: "माणिक (रूबी)",
+      sapphire: "नीलम (सफायर)",
+    },
+    dragHint: "घुमाकर देखने के लिए उंगली से घुमाएं",
+  },
   hero: {
     tag: "भारतीय जौहरियों के लिए विशेष रूप से निर्मित",
     headingPrefix: "दुकान के काउंटर की साधारण फोटो को बनाएं",
