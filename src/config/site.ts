@@ -14,6 +14,21 @@ export interface PricingPlan {
   recommended?: boolean;
 }
 
+export interface HeroConfig {
+  image: {
+    desktop: string;
+    mobile: string;
+    altKey: string;
+    fallbackAlt: string;
+    aspectRatio: string;
+  };
+  motion: {
+    enableFloat: boolean;
+    enableCursorTilt: boolean;
+    enableSparkles: boolean;
+  };
+}
+
 export const siteConfig = {
   name: "Shringaar",
   domain: "shringaar.live",
@@ -24,6 +39,20 @@ export const siteConfig = {
     whatsapp: "https://wa.me/919820012345?text=Hello%20Shringaar%20Team%2C%20I%20would%20like%20to%20know%20more.",
     address: "Mumbai & Jaipur, India",
   },
+  hero: {
+    image: {
+      desktop: "/images/hero-ring.webp",
+      mobile: "/images/hero-ring-mobile.webp",
+      altKey: "hero.imageAlt",
+      fallbackAlt: "Shringaar Fine Jewellery Solitaire Ring",
+      aspectRatio: "1 / 1",
+    },
+    motion: {
+      enableFloat: true,
+      enableCursorTilt: true,
+      enableSparkles: true,
+    },
+  } as HeroConfig,
   nav: [
     { id: "how-it-works", labelKey: "nav.howItWorks", href: "#how-it-works" },
     { id: "catalogue", labelKey: "nav.catalogue", href: "#catalogue" },

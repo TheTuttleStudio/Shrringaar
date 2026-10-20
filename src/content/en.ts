@@ -20,83 +20,6 @@ export const en = {
     languageToggle: "हिंदी",
     bookDemo: "Book a demo",
   },
-  swatches: {
-    metals: {
-      title: "Metal",
-      yellowGold: "Yellow gold",
-      roseGold: "Rose gold",
-      whiteGold: "White gold",
-    },
-    stones: {
-      title: "Gemstone",
-      diamond: "Solitaire diamond",
-      emerald: "Royal emerald",
-      ruby: "Pigeon blood ruby",
-      sapphire: "Blue sapphire",
-    },
-    dragHint: "Drag to rotate • Hover parts to inspect craft",
-  },
-  ringInspection: {
-    dragHint: "Drag to rotate • Hover parts to inspect craft",
-    mobileHint: "Tap points or parts to inspect craft",
-    closeAria: "Close details",
-    viewInCatalogue: "View in Live Catalogue",
-    instruction: "Interactive 3D Stage: Rotate freely with the hand cursor, or hover over ring components to inspect microscopic craftsmanship.",
-    parts: {
-      head: {
-        id: "head",
-        label: "Solitaire Crown",
-        subtitle: "57-Facet Round Brilliant Cut",
-        description: "Laser-symmetrical crown with 56% table ratio and 15% crown height. Unshared flat facets reflect multi-spectrum prismatic dispersion.",
-        image: "/images/parts/crown.jpg",
-        specs: [
-          { name: "Cut", value: "57-Facet Brilliant" },
-          { name: "Table Ratio", value: "56% Width" },
-          { name: "Crown Height", value: "15% Width" },
-          { name: "Pavilion Depth", value: "43% Width" },
-        ],
-      },
-      basket: {
-        id: "basket",
-        label: "Gallery Basket",
-        subtitle: "6-Claw Architectural Setting",
-        description: "Dual-tier open gallery collar engineered to allow maximum ambient light into the pavilion for superior brilliance and fire.",
-        image: "/images/parts/basket.jpg",
-        specs: [
-          { name: "Prongs", value: "6 Curved Claws" },
-          { name: "Collar", value: "Open Dual Tier" },
-          { name: "Light Path", value: "360° Transmission" },
-          { name: "Setting", value: "Solitaire Peg Head" },
-        ],
-      },
-      shoulder: {
-        id: "shoulder",
-        label: "Shoulder Pavé",
-        subtitle: "Handset Diamonds & Milgrain",
-        description: "Graduated shoulder channel embedded with hand-selected brilliant accent stones, edged with delicate vintage French milgrain beading.",
-        image: "/images/parts/pave.jpg",
-        specs: [
-          { name: "Accents", value: "8 Brilliant Stones" },
-          { name: "Edging", value: "0.016mm French Milgrain" },
-          { name: "Channel", value: "Tapered Flush-Set" },
-          { name: "Detail", value: "Hand-Beaded Rim" },
-        ],
-      },
-      shank: {
-        id: "shank",
-        label: "Comfort-Fit Shank",
-        subtitle: "Solid Hand-Polished Gold",
-        description: "Ergonomically contoured inner radius designed for effortless daily wear with zero pinch, counterbalanced for upright solitaire posture.",
-        image: "/images/parts/shank.jpg",
-        specs: [
-          { name: "Profile", value: "Curved Comfort-Fit" },
-          { name: "Finish", value: "Mirror Polish" },
-          { name: "Taper", value: "Ergonomic Shoulders" },
-          { name: "Balance", value: "Self-Centering" },
-        ],
-      },
-    },
-  },
   hero: {
     tag: "Built for Indian Jewellers",
     headingPrefix: "Turn simple counter photos into",
@@ -105,6 +28,7 @@ export const en = {
     description: "Take photos on your phone. Shringaar cleans reflections, preserves authentic gold tones, and publishes an instant live catalogue with customer try-on.",
     secondaryAction: "Explore live demo",
     badgeRating: "Works on any phone. No app to install.",
+    imageAlt: "Shringaar Fine Jewellery Solitaire Ring",
   },
   placeholderSections: {
     howItWorks: {

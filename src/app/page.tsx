@@ -7,7 +7,7 @@ import { Button } from "@/components/common/Button";
 import { Reveal } from "@/components/common/Reveal";
 import { useT } from "@/hooks/useT";
 import { Sparkles, ArrowRight, ShieldCheck } from "lucide-react";
-import { HeroJewelleryStage } from "@/components/canvas/HeroJewelleryStage";
+import { HeroVisual } from "@/components/hero/HeroVisual";
 
 export default function Home() {
   const { t, isHindi } = useT();
@@ -94,10 +94,10 @@ export default function Home() {
             </Reveal>
           </div>
 
-          {/* Right Column on Desktop / Center on Mobile: Single 3D Ring Stage */}
+          {/* Right Column on Desktop / Center on Mobile: Hero Visual */}
           <div className="lg:col-span-5 xl:col-span-5 flex justify-center order-2 w-full my-1 sm:my-2 lg:my-0">
             <Reveal mode="mount" delay={0.16}>
-              <HeroJewelleryStage />
+              <HeroVisual />
             </Reveal>
           </div>
 
