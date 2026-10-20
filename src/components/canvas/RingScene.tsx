@@ -3,6 +3,8 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+import { CubeCamera, ContactShadows } from "@react-three/drei";
+import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import { StudioLights } from "./StudioLights";
 import { RingModel, MetalType, StoneType } from "./RingModel";
 
@@ -11,7 +13,9 @@ interface RingSceneProps {
   stone: StoneType;
   isLowTier: boolean;
   reducedMotion: boolean;
+  lightTierMode?: "physical" | "reflective";
   onContextLost?: () => void;
+  onFpsReport?: (fps: number) => void;
 }
 
 // Inner animated stage that manages gentle rotation, inertia, and user horizontal drag
@@ -20,19 +24,26 @@ function RotatableRingStage({
   stone,
   isLowTier,
   reducedMotion,
+  lightTierMode,
+  onFpsReport,
 }: {
   metal: MetalType;
   stone: StoneType;
   isLowTier: boolean;
   reducedMotion: boolean;
+  lightTierMode?: "physical" | "reflective";
+  onFpsReport?: (fps: number) => void;
 }) {
   const groupRef = useRef<THREE.Group>(null);
   const isDragging = useRef(false);
   const startX = useRef(0);
   const velocity = useRef(0);
-  const targetRotationY = useRef(0.42); // 3/4 beauty angle
-  const targetRotationX = useRef(0.52); // Forward tilt displaying diamond crown and band thickness
-  const targetRotationZ = useRef(-0.12); // Subtle luxury asymmetric balance
+  const targetRotationY = useRef(0.58); // Elegant 3/4 jewellery perspective
+  const targetRotationX = useRef(0.48); // Forward tilt revealing brilliant crown & table facets
+
+  // FPS measurement
+  const frameCount = useRef(0);
+  const lastTime = useRef(performance.now());
 
   // Pointer event handlers for touch-safe horizontal rotation
   const handlePointerDown = (e: React.PointerEvent) => {
@@ -64,11 +75,20 @@ function RotatableRingStage({
   useFrame(() => {
     if (!groupRef.current) return;
 
+    // Measure FPS every 60 frames
+    frameCount.current++;
+    const now = performance.now();
+    if (now - lastTime.current >= 1000) {
+      const measuredFps = Math.round((frameCount.current * 1000) / (now - lastTime.current));
+      if (onFpsReport) onFpsReport(measuredFps);
+      frameCount.current = 0;
+      lastTime.current = now;
+    }
+
     if (reducedMotion) {
       // Keep completely still at elegant presentation angle for accessibility
-      groupRef.current.rotation.y = 0.42;
-      groupRef.current.rotation.x = 0.52;
-      groupRef.current.rotation.z = -0.12;
+      groupRef.current.rotation.y = 0.58;
+      groupRef.current.rotation.x = 0.48;
       return;
     }
 
@@ -92,11 +112,6 @@ function RotatableRingStage({
       targetRotationX.current,
       0.08
     );
-    groupRef.current.rotation.z = THREE.MathUtils.lerp(
-      groupRef.current.rotation.z,
-      targetRotationZ.current,
-      0.08
-    );
   });
 
   return (
@@ -107,7 +122,23 @@ function RotatableRingStage({
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
     >
-      <RingModel metal={metal} stone={stone} isLowTier={isLowTier} />
+      {/* CubeCamera captures the studio environment into a dynamic 512px cubemap */}
+      <CubeCamera
+        resolution={isLowTier ? 256 : 512}
+        frames={isLowTier ? 1 : Infinity}
+        near={0.1}
+        far={50}
+      >
+        {(texture) => (
+          <RingModel
+            metal={metal}
+            stone={stone}
+            isLowTier={isLowTier}
+            envMap={texture}
+            lightTierMode={lightTierMode}
+          />
+        )}
+      </CubeCamera>
     </group>
   );
 }
@@ -117,7 +148,9 @@ export function RingScene({
   stone,
   isLowTier,
   reducedMotion,
+  lightTierMode,
   onContextLost,
+  onFpsReport,
 }: RingSceneProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isOnScreen, setIsOnScreen] = useState(true);
@@ -172,7 +205,7 @@ export function RingScene({
       <Canvas
         frameloop={shouldRender ? "always" : "never"}
         dpr={isLowTier ? [1, 1.5] : [1, 2]}
-        camera={{ position: [0, 0.6, 4.4], fov: 36 }}
+        camera={{ position: [0, 0.42, 5.5], fov: 34 }}
         gl={{
           antialias: !isLowTier,
           alpha: true,
@@ -192,7 +225,31 @@ export function RingScene({
           stone={stone}
           isLowTier={isLowTier}
           reducedMotion={reducedMotion}
+          lightTierMode={lightTierMode}
+          onFpsReport={onFpsReport}
         />
+
+        {/* Soft grounding contact shadow under the ring */}
+        <ContactShadows
+          position={[0, -1.48, 0]}
+          opacity={0.34}
+          scale={4.8}
+          blur={2.0}
+          far={3.0}
+          color="#1C1714"
+        />
+
+        {/* Subtle Bloom for direct glints - desktop only */}
+        {!isLowTier && (
+          <EffectComposer enableNormalPass={false}>
+            <Bloom
+              luminanceThreshold={0.93}
+              luminanceSmoothing={0.15}
+              intensity={0.4}
+              mipmapBlur
+            />
+          </EffectComposer>
+        )}
       </Canvas>
     </div>
   );

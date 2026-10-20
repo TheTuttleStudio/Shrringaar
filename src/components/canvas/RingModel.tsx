@@ -2,7 +2,8 @@
 
 import React, { useMemo } from "react";
 import * as THREE from "three";
-import { MeshTransmissionMaterial } from "@react-three/drei";
+import { MeshRefractionMaterial } from "@react-three/drei";
+import { createRoundBrilliantGeometry } from "./gemGeometry";
 
 export type MetalType = "yellow" | "rose" | "white";
 export type StoneType = "diamond" | "emerald" | "ruby" | "sapphire";
@@ -11,174 +12,275 @@ interface RingModelProps {
   metal: MetalType;
   stone: StoneType;
   isLowTier: boolean;
+  envMap: THREE.Texture | THREE.CubeTexture | null;
+  lightTierMode?: "physical" | "reflective";
 }
 
+// Warm, authentic fine jewellery metal specifications (strictly no karat claims)
 const METAL_CONFIGS: Record<MetalType, { color: string; roughness: number; metalness: number }> = {
-  yellow: { color: "#E0B758", roughness: 0.14, metalness: 0.96 },
-  rose: { color: "#DE9F8E", roughness: 0.15, metalness: 0.95 },
-  white: { color: "#E4EAEC", roughness: 0.12, metalness: 0.98 },
+  yellow: { color: "#E0B758", roughness: 0.14, metalness: 0.90 },
+  rose: { color: "#E2A492", roughness: 0.15, metalness: 0.88 },
+  white: { color: "#F0F4F6", roughness: 0.14, metalness: 0.84 },
 };
 
-const STONE_CONFIGS: Record<StoneType, { color: string; transmissionColor: string; ior: number; dispersion: number }> = {
-  diamond: { color: "#FFFFFF", transmissionColor: "#FFFFFF", ior: 2.42, dispersion: 0.06 },
-  emerald: { color: "#116942", transmissionColor: "#188656", ior: 1.58, dispersion: 0.02 },
-  ruby: { color: "#9E1439", transmissionColor: "#B51A43", ior: 1.77, dispersion: 0.03 },
-  sapphire: { color: "#163778", transmissionColor: "#204DA0", ior: 1.77, dispersion: 0.03 },
+// Vibrant, luminous stone configurations (bright & rich, never near black)
+const STONE_CONFIGS: Record<StoneType, { color: string; ior: number; bounces: number; aberration: number; fresnel: number }> = {
+  diamond: { color: "#FFFFFF", ior: 2.417, bounces: 4, aberration: 0.025, fresnel: 0.35 },
+  emerald: { color: "#14A05C", ior: 1.58, bounces: 3, aberration: 0.015, fresnel: 0.28 },
+  ruby: { color: "#D0173F", ior: 1.77, bounces: 4, aberration: 0.02, fresnel: 0.32 },
+  sapphire: { color: "#2A5BD7", ior: 1.77, bounces: 4, aberration: 0.02, fresnel: 0.32 },
 };
 
-export function RingModel({ metal, stone, isLowTier }: RingModelProps) {
+export function RingModel({
+  metal,
+  stone,
+  isLowTier,
+  envMap,
+  lightTierMode = "physical",
+}: RingModelProps) {
   const metalConfig = METAL_CONFIGS[metal];
   const stoneConfig = STONE_CONFIGS[stone];
 
-  // Band & prongs metal material
+  // High-polish metal material for band, basket, and claws
   const metalMaterial = useMemo(() => {
     return new THREE.MeshStandardMaterial({
       color: new THREE.Color(metalConfig.color),
       roughness: metalConfig.roughness,
       metalness: metalConfig.metalness,
-      envMapIntensity: 1.8,
+      envMapIntensity: 2.2,
     });
   }, [metalConfig]);
 
-  // Combined diamond/gemstone geometry (Crown + Pavilion)
+  // Main 57-Facet Brilliant Cut Gemstone Geometry (Scale: 1.15 units diameter)
   const gemGeometry = useMemo(() => {
-    const geom = new THREE.BufferGeometry();
-    
-    // Create brilliant cut approximation using indexed vertices
-    // Table facet + Upper girdle + Lower girdle + Culet point
-    const segments = 16;
-    const tableRadius = 0.38;
-    const girdleRadius = 0.58;
-    const tableHeight = 0.18;
-    const girdleHeight = 0.0;
-    const culetHeight = -0.52;
-
-    const vertices: number[] = [];
-    const indices: number[] = [];
-
-    // Vertex 0: Table center
-    vertices.push(0, tableHeight, 0);
-
-    // Vertices 1..segments: Table rim
-    for (let i = 0; i < segments; i++) {
-      const angle = (i * 2 * Math.PI) / segments;
-      vertices.push(Math.cos(angle) * tableRadius, tableHeight, Math.sin(angle) * tableRadius);
-    }
-
-    // Vertices (segments+1)..(2*segments): Girdle rim
-    for (let i = 0; i < segments; i++) {
-      const angle = (i * 2 * Math.PI) / segments;
-      vertices.push(Math.cos(angle) * girdleRadius, girdleHeight, Math.sin(angle) * girdleRadius);
-    }
-
-    // Vertex 2*segments + 1: Culet (point at bottom)
-    const culetIndex = 2 * segments + 1;
-    vertices.push(0, culetHeight, 0);
-
-    // Faces: Table top fan
-    for (let i = 1; i <= segments; i++) {
-      const next = i === segments ? 1 : i + 1;
-      indices.push(0, i, next);
-    }
-
-    // Faces: Crown facets (Table rim to Girdle rim)
-    for (let i = 0; i < segments; i++) {
-      const table1 = 1 + i;
-      const table2 = 1 + ((i + 1) % segments);
-      const girdle1 = 1 + segments + i;
-      const girdle2 = 1 + segments + ((i + 1) % segments);
-
-      // Triangulate crown quad
-      indices.push(table1, girdle1, girdle2);
-      indices.push(table1, girdle2, table2);
-    }
-
-    // Faces: Pavilion facets (Girdle to Culet point)
-    for (let i = 0; i < segments; i++) {
-      const girdle1 = 1 + segments + i;
-      const girdle2 = 1 + segments + ((i + 1) % segments);
-      indices.push(girdle1, culetIndex, girdle2);
-    }
-
-    geom.setAttribute("position", new THREE.Float32BufferAttribute(vertices, 3));
-    geom.setIndex(indices);
-    geom.computeVertexNormals();
-
-    return geom;
+    return createRoundBrilliantGeometry(1.15);
   }, []);
 
-  return (
-    <group position={[0, -0.4, 0]}>
-      {/* 1. Main Gold Ring Band (Shank) */}
-      <mesh material={metalMaterial} castShadow receiveShadow>
-        <torusGeometry args={[1.3, 0.13, 32, 64]} />
-      </mesh>
+  // Accent Diamond Geometry (Tiny round brilliant)
+  const accentGemGeometry = useMemo(() => {
+    return createRoundBrilliantGeometry(0.14);
+  }, []);
 
-      {/* 2. Prong Setting Bezel & Seat */}
-      <group position={[0, 1.25, 0]}>
-        {/* Under-gallery support collar */}
-        <mesh position={[0, 0.05, 0]} material={metalMaterial}>
-          <torusGeometry args={[0.42, 0.035, 16, 32]} />
+  // Material for accent stones
+  const accentStoneMaterial = useMemo(() => {
+    return new THREE.MeshPhysicalMaterial({
+      color: 0xffffff,
+      roughness: 0.02,
+      metalness: 0.08,
+      transmission: 0.9,
+      ior: 2.4,
+      reflectivity: 0.95,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.02,
+    });
+  }, []);
+
+  // Ring band dimensions (vertical circle in XY plane)
+  const ringRadius = 1.20;
+
+  // Comfort-fit tapered band profile (smooth rounded cross-section in XY plane)
+  const bandGeometry = useMemo(() => {
+    const segments = 96;
+    const tubeSegments = 24;
+    const positions: number[] = [];
+    const indices: number[] = [];
+
+    for (let i = 0; i <= segments; i++) {
+      const u = (i / segments) * Math.PI * 2;
+      const cosU = Math.cos(u);
+      const sinU = Math.sin(u);
+
+      // Tapering factor: slightly narrower near head (u ~ Math.PI / 2)
+      const distFromTop = Math.abs(u - Math.PI / 2);
+      const taper = distFromTop < 0.6 ? 0.78 + 0.22 * (distFromTop / 0.6) : 1.0;
+      const tubeRadiusR = 0.085 * taper; // Radial thickness
+      const tubeRadiusZ = 0.11 * taper;  // Width along finger (Z axis)
+
+      for (let j = 0; j <= tubeSegments; j++) {
+        const v = (j / tubeSegments) * Math.PI * 2;
+        const cosV = Math.cos(v);
+        const sinV = Math.sin(v);
+
+        // Position on comfort-fit ring profile
+        const r = ringRadius + tubeRadiusR * cosV;
+        const x = r * cosU;
+        const y = r * sinU;
+        const z = tubeRadiusZ * sinV;
+
+        positions.push(x, y, z);
+      }
+    }
+
+    for (let i = 0; i < segments; i++) {
+      for (let j = 0; j < tubeSegments; j++) {
+        const a = i * (tubeSegments + 1) + j;
+        const b = (i + 1) * (tubeSegments + 1) + j;
+        const c = (i + 1) * (tubeSegments + 1) + (j + 1);
+        const d = i * (tubeSegments + 1) + (j + 1);
+
+        indices.push(a, b, d);
+        indices.push(b, c, d);
+      }
+    }
+
+    const geom = new THREE.BufferGeometry();
+    geom.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
+    geom.setIndex(indices);
+    geom.computeVertexNormals();
+    return geom;
+  }, [ringRadius]);
+
+  // 6 Curved Claw Prongs (Tubular curves hugging the girdle and claws over the crown)
+  const prongGeometries = useMemo(() => {
+    const prongs: THREE.BufferGeometry[] = [];
+    const count = 6;
+    const baseRadius = 0.32;
+    const girdleRadius = 0.58;
+    const crownRadius = 0.48;
+
+    for (let i = 0; i < count; i++) {
+      const angle = (i * 2 * Math.PI) / count;
+      const cos = Math.cos(angle);
+      const sin = Math.sin(angle);
+
+      // Start from gallery basket collar, curve outwards around girdle, hook inwards over crown
+      const p0 = new THREE.Vector3(cos * baseRadius, -0.22, sin * baseRadius);
+      const p1 = new THREE.Vector3(cos * (girdleRadius + 0.02), 0.02, sin * (girdleRadius + 0.02));
+      const p2 = new THREE.Vector3(cos * crownRadius, 0.16, sin * crownRadius);
+
+      const curve = new THREE.QuadraticBezierCurve3(p0, p1, p2);
+      const tube = new THREE.TubeGeometry(curve, 18, 0.028, 8, false);
+      prongs.push(tube);
+    }
+    return prongs;
+  }, []);
+
+  // Shoulder Accent Diamonds placement
+  const accentPositions = useMemo(() => {
+    const items: { x: number; y: number; z: number; rotZ: number }[] = [];
+    // 3 stones on left shoulder, 3 on right shoulder
+    for (let side = -1; side <= 1; side += 2) {
+      for (let step = 1; step <= 3; step++) {
+        const angleOffset = side * (0.13 + step * 0.075);
+        const angle = Math.PI / 2 + angleOffset;
+        const r = ringRadius + 0.075;
+        const x = Math.cos(angle) * r;
+        const y = Math.sin(angle) * r;
+        const rotZ = angle - Math.PI / 2;
+        items.push({ x, y, z: 0, rotZ });
+      }
+    }
+    return items;
+  }, [ringRadius]);
+
+  // Milgrain bead geometry (single merged buffer for clean, deterministic rendering)
+  const milgrainGeometry = useMemo(() => {
+    const positions: number[] = [];
+    const sphere = new THREE.SphereGeometry(0.014, 6, 6);
+    const spherePos = sphere.attributes.position.array;
+
+    for (let side = -1; side <= 1; side += 2) {
+      for (let step = 1; step <= 10; step++) {
+        const angleOffset = side * (0.11 + step * 0.038);
+        const angle = Math.PI / 2 + angleOffset;
+        const r = ringRadius + 0.082;
+        const cx = Math.cos(angle) * r;
+        const cy = Math.sin(angle) * r;
+
+        for (const cz of [-0.065, 0.065]) {
+          for (let i = 0; i < spherePos.length; i += 3) {
+            positions.push(
+              spherePos[i] + cx,
+              spherePos[i + 1] + cy,
+              spherePos[i + 2] + cz
+            );
+          }
+        }
+      }
+    }
+
+    const geom = new THREE.BufferGeometry();
+    geom.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
+    geom.computeVertexNormals();
+    return geom;
+  }, [ringRadius]);
+
+  return (
+    // Centering offset: entire ring midpoint sits exactly at (0, 0, 0)
+    <group position={[0, -0.16, 0]}>
+      {/* 1. Comfort-fit Ring Band */}
+      <mesh
+        geometry={bandGeometry}
+        material={metalMaterial}
+        castShadow
+        receiveShadow
+      />
+
+      {/* 2. Shoulder Accent Diamonds */}
+      {accentPositions.map((pos, idx) => (
+        <mesh
+          key={idx}
+          geometry={accentGemGeometry}
+          material={accentStoneMaterial}
+          position={[pos.x, pos.y, pos.z]}
+          rotation={[0, 0, pos.rotZ]}
+        />
+      ))}
+
+      {/* 3. Shoulder Milgrain Beading */}
+      <mesh geometry={milgrainGeometry} material={metalMaterial} />
+
+      {/* 4. Solitaire Head Setting (Basket, Claws & Center Gemstone) */}
+      <group position={[0, ringRadius + 0.22, 0]}>
+        {/* Gallery collar basket under girdle */}
+        <mesh position={[0, -0.14, 0]} rotation={[Math.PI / 2, 0, 0]} material={metalMaterial}>
+          <torusGeometry args={[0.38, 0.026, 12, 32]} />
+        </mesh>
+        <mesh position={[0, -0.26, 0]} rotation={[Math.PI / 2, 0, 0]} material={metalMaterial}>
+          <torusGeometry args={[0.26, 0.022, 12, 32]} />
         </mesh>
 
-        {/* 6 Curved Prongs holding the solitaire */}
-        {[0, 1, 2, 3, 4, 5].map((i) => {
-          const angle = (i * Math.PI) / 3;
-          const radius = 0.44;
-          const x = Math.cos(angle) * radius;
-          const z = Math.sin(angle) * radius;
-          return (
-            <mesh
-              key={i}
-              position={[x, 0.22, z]}
-              rotation={[
-                0.14 * Math.sin(angle),
-                0,
-                -0.14 * Math.cos(angle),
-              ]}
-              material={metalMaterial}
-            >
-              <cylinderGeometry args={[0.035, 0.024, 0.44, 16]} />
-            </mesh>
-          );
-        })}
+        {/* 6 Curved Claw Prongs */}
+        {prongGeometries.map((geom, idx) => (
+          <mesh key={idx} geometry={geom} material={metalMaterial} />
+        ))}
 
-        {/* 3. Brilliant Solitaire Gemstone */}
-        <mesh position={[0, 0.35, 0]} geometry={gemGeometry}>
-          {isLowTier ? (
-            /* High-performance physical material for mobile / low concurrency */
+        {/* 5. Center Brilliant Cut Gemstone */}
+        <mesh geometry={gemGeometry} position={[0, 0, 0]}>
+          {!isLowTier && envMap ? (
+            /* Desktop High-Tier: Drei MeshRefractionMaterial with BVH ray bounces */
+            <MeshRefractionMaterial
+              envMap={envMap}
+              color={stoneConfig.color}
+              ior={stoneConfig.ior}
+              bounces={stoneConfig.bounces}
+              aberrationStrength={stoneConfig.aberration}
+              fresnel={stoneConfig.fresnel}
+              fastChroma={true}
+            />
+          ) : lightTierMode === "reflective" ? (
+            /* Light Tier Option B: High-metalness reflective mirror facets */
+            <meshStandardMaterial
+              color={stoneConfig.color}
+              metalness={0.96}
+              roughness={0.02}
+              envMapIntensity={2.8}
+            />
+          ) : (
+            /* Light Tier Option A: Flat-shaded Physical with transmission */
             <meshPhysicalMaterial
               color={stoneConfig.color}
-              roughness={0.04}
-              metalness={0.02}
+              roughness={0.02}
+              metalness={0.08}
               transmission={0.92}
-              thickness={0.85}
+              thickness={1.0}
               ior={stoneConfig.ior}
               transparent
-              opacity={stone === "diamond" ? 0.94 : 0.92}
+              opacity={stone === "diamond" ? 0.95 : 0.92}
               envMapIntensity={2.4}
               reflectivity={0.95}
               clearcoat={1.0}
               clearcoatRoughness={0.02}
-            />
-          ) : (
-            /* High-fidelity transmission material for desktop */
-            <MeshTransmissionMaterial
-              backside
-              samples={6}
-              resolution={384}
-              transmission={0.95}
-              roughness={0.03}
-              thickness={0.9}
-              ior={stoneConfig.ior}
-              chromaticAberration={stoneConfig.dispersion}
-              anisotropy={0.1}
-              distortion={0.05}
-              distortionScale={0.1}
-              temporalDistortion={0}
-              color={stoneConfig.color}
-              attenuationColor={stoneConfig.transmissionColor}
-              attenuationDistance={0.5}
             />
           )}
         </mesh>

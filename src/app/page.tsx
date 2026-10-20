@@ -26,7 +26,7 @@ export default function Home() {
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 xl:gap-16 items-center">
           {/* Left Column: Heading & Content on Desktop */}
-          <div className="lg:col-span-6 xl:col-span-6 flex flex-col items-center lg:items-start text-center lg:text-left space-y-4 sm:space-y-6 order-1">
+          <div className="lg:col-span-7 xl:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left space-y-4 sm:space-y-6 order-1">
             {/* Subtle quiet luxury badge */}
             <Reveal mode="mount" delay={0.05}>
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#B8975A]/10 border border-[#B8975A]/25 text-[#91723A] text-xs font-sans tracking-wide">
@@ -38,7 +38,7 @@ export default function Home() {
             {/* Cormorant Garamond / Tiro Devanagari Heading with italic accent */}
             <Reveal mode="mount" delay={0.12}>
               <h1
-                className={`text-3xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-light tracking-tight leading-[1.16] sm:leading-[1.12] text-[#1C1714] ${serifHeadingFont}`}
+                className={`text-3xl sm:text-4xl lg:text-5xl xl:text-[3.5rem] font-light tracking-tight leading-[1.12] text-[#1C1714] ${serifHeadingFont}`}
               >
                 {t("hero.headingPrefix")}{" "}
                 <span className="italic font-normal text-[#91723A]">
@@ -95,7 +95,7 @@ export default function Home() {
           </div>
 
           {/* Right Column on Desktop / Center on Mobile: Single 3D Ring Stage */}
-          <div className="lg:col-span-6 xl:col-span-6 flex justify-center order-2 w-full my-1 sm:my-2 lg:my-0">
+          <div className="lg:col-span-5 xl:col-span-5 flex justify-center order-2 w-full my-1 sm:my-2 lg:my-0">
             <Reveal mode="mount" delay={0.16}>
               <HeroJewelleryStage />
             </Reveal>

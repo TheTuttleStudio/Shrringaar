@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useT } from "@/hooks/useT";
 import { MetalType, StoneType } from "./RingModel";
-import { Sparkles, MoveHorizontal, AlertCircle } from "lucide-react";
+import { MoveHorizontal, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // Lazy-load the Three.js canvas on client only
@@ -19,11 +19,20 @@ const DynamicRingScene = dynamic(
 
 function RingLoadingPlaceholder() {
   return (
-    <div className="relative w-full h-full flex flex-col items-center justify-center bg-radial from-[#FFFDFB] to-[#F5EFE6]/60 rounded-3xl overflow-hidden border border-[#E8E0D5]/50 animate-pulse">
-      <div className="w-40 h-40 rounded-full bg-[#B8975A]/10 blur-2xl" />
-      <span className="text-xs font-sans text-[#8A7F77] tracking-wider uppercase">
-        Loading 3D Studio…
-      </span>
+    <div className="relative w-full h-full flex flex-col items-center justify-center rounded-3xl overflow-hidden border border-[#E8E0D5]/60 bg-[#FAF7F2]">
+      <Image
+        src="/images/ring-fallback.jpg"
+        alt="Shringaar Fine Jewellery Solitaire Ring"
+        fill
+        sizes="(max-width: 768px) 100vw, 460px"
+        priority
+        className="object-contain p-6 opacity-60 filter blur-[1px] transition-opacity"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#FAF7F2] via-transparent to-transparent opacity-80" />
+      <div className="absolute bottom-4 flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF7F2]/90 backdrop-blur-sm border border-[#E8E0D5] text-[11px] font-sans text-[#8A7F77] shadow-sm">
+        <span className="w-1.5 h-1.5 rounded-full bg-[#B8975A] animate-ping" />
+        <span>Loading 3D Studio…</span>
+      </div>
     </div>
   );
 }
@@ -31,11 +40,12 @@ function RingLoadingPlaceholder() {
 function RingStillFallback({ reason }: { reason?: string }) {
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-center rounded-3xl overflow-hidden border border-[#E8E0D5] bg-[#FAF7F2]">
-      <div className="relative w-full h-full min-h-[300px]">
+      <div className="relative w-full h-full min-h-[260px]">
         <Image
           src="/images/ring-fallback.jpg"
           alt="Shringaar Fine Jewellery Solitaire Ring"
           fill
+          sizes="(max-width: 768px) 100vw, 460px"
           priority
           className="object-contain p-6"
         />
@@ -56,19 +66,36 @@ export function HeroJewelleryStage() {
   const [metal, setMetal] = useState<MetalType>("yellow");
   const [stone, setStone] = useState<StoneType>("diamond");
   const [isLowTier, setIsLowTier] = useState(false);
+  const [lightTierMode, setLightTierMode] = useState<"physical" | "reflective">("physical");
   const [reducedMotion, setReducedMotion] = useState(false);
   const [webglError, setWebglError] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [currentFps, setCurrentFps] = useState<number | null>(null);
 
   useEffect(() => {
     setMounted(true);
 
-    // 1. Device tier detection: Touch device OR low CPU core count
+    // 1. Device tier detection: Touch device OR low CPU core count (never rely solely on width)
+    const searchParams = new URLSearchParams(window.location.search);
+    const tierParam = searchParams.get("tier");
+    const modeParam = searchParams.get("lightMode");
+
     const hasTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
     const isLowConcurrency = Boolean(
       navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4
     );
-    setIsLowTier(hasTouch || isLowConcurrency);
+
+    if (tierParam === "low") {
+      setIsLowTier(true);
+    } else if (tierParam === "high") {
+      setIsLowTier(false);
+    } else {
+      setIsLowTier(hasTouch || isLowConcurrency);
+    }
+
+    if (modeParam === "reflective" || modeParam === "physical") {
+      setLightTierMode(modeParam);
+    }
 
     // 2. Prefers reduced motion
     const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -97,51 +124,47 @@ export function HeroJewelleryStage() {
       {
         id: "yellow",
         labelKey: "swatches.metals.yellowGold",
-        color: "bg-[#E0B758]",
+        color: "bg-[#DEB558]",
         border: "border-[#C59B3F]",
       },
       {
         id: "rose",
         labelKey: "swatches.metals.roseGold",
-        color: "bg-[#DE9F8E]",
+        color: "bg-[#DF9E8C]",
         border: "border-[#C5806D]",
       },
       {
         id: "white",
         labelKey: "swatches.metals.whiteGold",
-        color: "bg-[#E4EAEC]",
+        color: "bg-[#E5EAEC]",
         border: "border-[#B8C6CC]",
       },
     ],
     []
   );
 
-  // Stones config (4 options)
-  const stones: { id: StoneType; labelKey: string; color: string; ringColor: string }[] = useMemo(
+  // Stones config (4 options: Diamond, Emerald, Ruby, Blue Sapphire - bright & luminous)
+  const stones: { id: StoneType; labelKey: string; color: string }[] = useMemo(
     () => [
       {
         id: "diamond",
         labelKey: "swatches.stones.diamond",
-        color: "bg-gradient-to-tr from-white via-[#F0F5FA] to-[#E6F0F8]",
-        ringColor: "ring-[#B8975A]",
+        color: "bg-gradient-to-tr from-white via-[#F5F9FC] to-[#E8F2FA]",
       },
       {
         id: "emerald",
         labelKey: "swatches.stones.emerald",
-        color: "bg-[#116942]",
-        ringColor: "ring-[#116942]",
+        color: "bg-[#14A05C]",
       },
       {
         id: "ruby",
         labelKey: "swatches.stones.ruby",
-        color: "bg-[#9E1439]",
-        ringColor: "ring-[#9E1439]",
+        color: "bg-[#D0173F]",
       },
       {
         id: "sapphire",
         labelKey: "swatches.stones.sapphire",
-        color: "bg-[#163778]",
-        ringColor: "ring-[#163778]",
+        color: "bg-[#2A5BD7]",
       },
     ],
     []
@@ -149,10 +172,10 @@ export function HeroJewelleryStage() {
 
   return (
     <div className="relative w-full flex flex-col items-center">
-      {/* 3D Canvas Stage */}
-      <div className="relative w-full max-w-[340px] sm:max-w-[420px] lg:max-w-[480px] h-[240px] sm:h-[340px] lg:h-[440px] rounded-2xl sm:rounded-3xl bg-gradient-to-b from-[#FFFDFB] to-[#F5EFE6]/80 border border-[#E8E0D5]/70 shadow-[0_8px_30px_rgba(28,23,20,0.04)] overflow-hidden">
+      {/* 3D Canvas Stage with generous ~15% padding */}
+      <div className="relative w-full max-w-[340px] sm:max-w-[420px] lg:max-w-[460px] h-[260px] sm:h-[360px] lg:h-[450px] rounded-2xl sm:rounded-3xl bg-gradient-to-b from-[#FFFDFB] to-[#F5EFE6]/80 border border-[#E8E0D5]/70 shadow-[0_8px_30px_rgba(28,23,20,0.04)] overflow-hidden">
         {/* Subtle Luxury Stage Backdrop Glow */}
-        <div className="absolute inset-0 pointer-events-none bg-radial from-[#B8975A]/8 via-transparent to-transparent opacity-70" />
+        <div className="absolute inset-0 pointer-events-none bg-radial from-[#B8975A]/8 via-transparent to-transparent opacity-60" />
 
         {/* 3D Scene or Fallback */}
         {webglError || !mounted ? (
@@ -163,21 +186,30 @@ export function HeroJewelleryStage() {
             stone={stone}
             isLowTier={isLowTier}
             reducedMotion={reducedMotion}
+            lightTierMode={lightTierMode}
             onContextLost={() => setWebglError(true)}
+            onFpsReport={(fps) => setCurrentFps(fps)}
           />
         )}
 
         {/* Interactive Drag Hint */}
         <div className="absolute bottom-2.5 inset-x-0 flex items-center justify-center pointer-events-none">
-          <div className="flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#FAF7F2]/90 backdrop-blur-sm border border-[#E8E0D5] text-[10px] sm:text-[11px] font-sans text-[#6B625B] shadow-sm">
+          <div className="flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#FAF7F2]/90 backdrop-blur-sm border border-[#E8E0D5] text-[10px] sm:text-[11px] font-sans text-[#6B625B] shadow-sm">
             <MoveHorizontal className="w-3 h-3 text-[#B8975A]" />
             <span>{t("swatches.dragHint")}</span>
           </div>
         </div>
+
+        {/* Measured FPS Pill (Discrete debugging / verification badge) */}
+        {currentFps !== null && (
+          <div className="absolute top-2.5 right-2.5 text-[9px] font-mono px-2 py-0.5 rounded-full bg-black/5 text-[#6B625B] border border-black/5">
+            {currentFps} FPS
+          </div>
+        )}
       </div>
 
       {/* Swatches Customizer Area */}
-      <div className="mt-3 sm:mt-5 w-full max-w-[420px] px-1 sm:px-2 flex flex-col gap-2 sm:gap-3.5">
+      <div className="mt-3.5 sm:mt-5 w-full max-w-[420px] px-1 sm:px-2 flex flex-col gap-2.5 sm:gap-3.5">
         {/* Metal Swatches */}
         <div className="flex items-center justify-between sm:justify-center gap-2 sm:gap-5">
           <span className="text-[11px] sm:text-xs font-sans text-[#8A7F77] tracking-wider uppercase min-w-[45px]">
@@ -190,6 +222,7 @@ export function HeroJewelleryStage() {
                 <button
                   key={m.id}
                   type="button"
+                  data-metal={m.id}
                   onClick={() => setMetal(m.id)}
                   className={cn(
                     "group relative min-w-[44px] min-h-[44px] w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B8975A]",
@@ -199,14 +232,12 @@ export function HeroJewelleryStage() {
                   aria-checked={active}
                   role="radio"
                 >
-                  {/* Outer active halo */}
                   <span
                     className={cn(
                       "absolute inset-0 rounded-full border-2 transition-all duration-200",
                       active ? "border-[#1C1714] scale-100" : "border-transparent"
                     )}
                   />
-                  {/* Inner color swatch */}
                   <span
                     className={cn(
                       "w-7 h-7 rounded-full shadow-inner border",
@@ -214,7 +245,6 @@ export function HeroJewelleryStage() {
                       m.border
                     )}
                   />
-                  {/* Tooltip on hover */}
                   <span className="absolute -top-7 whitespace-nowrap px-2 py-0.5 rounded bg-[#1C1714] text-[#FAF7F2] text-[10px] font-sans opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 z-20">
                     {t(m.labelKey)}
                   </span>
@@ -225,17 +255,18 @@ export function HeroJewelleryStage() {
         </div>
 
         {/* Stone Swatches (4 stones) */}
-        <div className="flex items-center justify-between sm:justify-center gap-2 sm:gap-6 pt-1 border-t border-[#E8E0D5]/50">
-          <span className="text-xs font-sans text-[#8A7F77] tracking-wider uppercase min-w-[50px]">
+        <div className="flex items-center justify-between sm:justify-center gap-2 sm:gap-5 pt-1.5 border-t border-[#E8E0D5]/50">
+          <span className="text-[11px] sm:text-xs font-sans text-[#8A7F77] tracking-wider uppercase min-w-[45px]">
             {t("swatches.stones.title")}
           </span>
-          <div className="flex items-center gap-3" role="radiogroup" aria-label="Select Gemstone">
+          <div className="flex items-center gap-2 sm:gap-3" role="radiogroup" aria-label="Select Gemstone">
             {stones.map((s) => {
               const active = stone === s.id;
               return (
                 <button
                   key={s.id}
                   type="button"
+                  data-stone={s.id}
                   onClick={() => setStone(s.id)}
                   className={cn(
                     "group relative min-w-[44px] min-h-[44px] w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B8975A]",
@@ -245,23 +276,20 @@ export function HeroJewelleryStage() {
                   aria-checked={active}
                   role="radio"
                 >
-                  {/* Outer active halo */}
                   <span
                     className={cn(
                       "absolute inset-0 rounded-full border-2 transition-all duration-200",
                       active ? "border-[#1C1714] scale-100" : "border-transparent"
                     )}
                   />
-                  {/* Inner gemstone swatch with facet shimmer */}
                   <span
                     className={cn(
                       "w-7 h-7 rounded-full shadow-sm border border-black/10 relative overflow-hidden",
                       s.color
                     )}
                   >
-                    <span className="absolute inset-0 bg-gradient-to-tr from-white/30 to-transparent" />
+                    <span className="absolute inset-0 bg-gradient-to-tr from-white/35 to-transparent" />
                   </span>
-                  {/* Tooltip on hover */}
                   <span className="absolute -top-7 whitespace-nowrap px-2 py-0.5 rounded bg-[#1C1714] text-[#FAF7F2] text-[10px] font-sans opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 z-20">
                     {t(s.labelKey)}
                   </span>

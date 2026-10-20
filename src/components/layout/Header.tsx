@@ -56,6 +56,7 @@ export function Header() {
             className={cn(
               "font-logo text-2xl sm:text-3xl font-light tracking-wide text-[#1C1714] transition-colors group-hover:text-[#B8975A]"
             )}
+            style={{ fontFamily: "var(--font-cormorant), 'Cormorant Garamond', Georgia, serif" }}
           >
             {siteConfig.name}
           </span>
