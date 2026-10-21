@@ -6,7 +6,7 @@ import { siteConfig } from "@/config/site";
 import { useT } from "@/hooks/useT";
 
 export function Beat1CounterStand() {
-  const { isHindi } = useT();
+  const { t, isHindi } = useT();
 
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-center p-2 sm:p-4 select-none">
@@ -37,7 +37,7 @@ export function Beat1CounterStand() {
           <div className="relative w-36 h-36 sm:w-44 sm:h-44 rounded-xl overflow-hidden border border-[#E8E0D5] bg-white p-2 shadow-inner my-1">
             <Image
               src={siteConfig.tryOn.qrImage}
-              alt="Scan to try on jewellery"
+              alt={t("tryOn.ui.altQrStand")}
               fill
               priority
               className="object-contain"
@@ -47,7 +47,7 @@ export function Beat1CounterStand() {
           {/* Prompt badge */}
           <div className="mt-1.5 px-2.5 py-0.5 rounded-full bg-[#B8975A]/15 border border-[#B8975A]/30">
             <span className="text-[10px] font-sans font-medium text-[#91723A]">
-              {isHindi ? "कैमरे से स्कैन करें" : "Scan to try on"}
+              {t("tryOn.ui.scanToTryOn")}
             </span>
           </div>
 
@@ -56,6 +56,7 @@ export function Beat1CounterStand() {
             {siteConfig.tryOn.sampleUrl}
           </span>
         </div>
+
 
         {/* Slotted Brass Stand Base Foot */}
         <div className="relative -mt-1 z-20 flex flex-col items-center">

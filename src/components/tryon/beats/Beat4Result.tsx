@@ -21,7 +21,7 @@ export function Beat4Result() {
         <div className="flex items-center gap-1.5">
           <Sparkles className="w-3.5 h-3.5 text-[#B8975A]" />
           <span className="text-[11px] font-sans font-semibold text-[#1C1714]">
-            {isHindi ? "लाइव ट्राय-ऑन" : "Live Try-On"}
+            {t("tryOn.ui.liveTryOn")}
           </span>
         </div>
         <button
@@ -37,7 +37,7 @@ export function Beat4Result() {
       <div className="relative flex-1 w-full my-2 rounded-2xl overflow-hidden border border-[#B8975A]/40 bg-[#F5EFE6] shadow-[0_8px_24px_rgba(184,151,90,0.15)]">
         <Image
           src={config.resultImage}
-          alt="Customer wearing gold jhumka try-on result"
+          alt={t("tryOn.ui.altTryOnResult")}
           fill
           className="object-cover"
         />
@@ -46,10 +46,11 @@ export function Beat4Result() {
         <div className="absolute bottom-2 left-2 right-2 flex justify-center">
           <div className="px-3 py-1 rounded-full bg-[#1C1714]/85 backdrop-blur-xs text-[10px] font-sans text-[#FAF7F2] border border-white/10 shadow-xs flex items-center gap-1.5">
             <Sparkles className="w-3 h-3 text-[#B8975A]" />
-            <span>{isHindi ? "कुंदन झुमका • काउंटर पर पहना हुआ" : "Kundan Jhumka • Worn at Counter"}</span>
+            <span>{t("tryOn.ui.wornPill")}</span>
           </div>
         </div>
       </div>
+
 
       {/* Finishing Frame Callout: "Try it on, right from your phone." */}
       <div className="w-full py-2 px-2.5 rounded-2xl bg-gradient-to-r from-[#FAF7F2] via-[#F5EFE6] to-[#FAF7F2] border border-[#B8975A]/50 text-center shadow-xs">

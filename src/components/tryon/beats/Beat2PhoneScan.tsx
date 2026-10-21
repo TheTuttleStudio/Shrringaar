@@ -7,7 +7,7 @@ import { useT } from "@/hooks/useT";
 import { Check, Sparkles } from "lucide-react";
 
 export function Beat2PhoneScan() {
-  const { isHindi } = useT();
+  const { t, isHindi } = useT();
 
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-between p-4 bg-[#14110F] overflow-hidden text-white">
@@ -16,7 +16,7 @@ export function Beat2PhoneScan() {
         <div className="relative w-40 h-40">
           <Image
             src={siteConfig.tryOn.qrImage}
-            alt="Target QR"
+            alt={t("tryOn.ui.altTargetQr")}
             fill
             className="object-contain filter blur-[1px]"
           />
@@ -28,7 +28,7 @@ export function Beat2PhoneScan() {
         <div className="mx-auto max-w-[220px] px-3 py-1.5 rounded-full bg-[#1C1714]/90 border border-[#B8975A]/60 shadow-[0_4px_16px_rgba(0,0,0,0.4)] flex items-center justify-center gap-1.5 backdrop-blur-xs">
           <span className="w-2 h-2 rounded-full bg-[#B8975A] animate-ping" />
           <span className="text-[10px] font-sans font-medium text-[#FAF7F2] truncate">
-            {isHindi ? "QR कोड पहचाना गया" : "QR Code Detected"}
+            {t("tryOn.ui.qrDetected")}
           </span>
         </div>
       </div>
@@ -45,7 +45,7 @@ export function Beat2PhoneScan() {
         <div className="relative w-28 h-28 rounded-lg overflow-hidden border border-[#B8975A]/50 bg-[#FAF7F2] p-1 shadow-md">
           <Image
             src={siteConfig.tryOn.qrImage}
-            alt="Scanned QR"
+            alt={t("tryOn.ui.altScannedQr")}
             fill
             className="object-contain"
           />
@@ -67,11 +67,12 @@ export function Beat2PhoneScan() {
             </p>
             <p className="text-[9px] font-sans text-[#6B5E4F] flex items-center gap-1">
               <Sparkles className="w-2.5 h-2.5 text-[#B8975A]" />
-              <span>{isHindi ? "ब्राउज़र में तुरंत खुला" : "Opening instant web app..."}</span>
+              <span>{t("tryOn.ui.openingApp")}</span>
             </p>
           </div>
         </div>
       </div>
+
     </div>
   );
 }

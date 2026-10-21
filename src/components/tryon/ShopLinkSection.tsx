@@ -134,7 +134,7 @@ export function ShopLinkSection() {
             {/* Live Link Indicator */}
             <div className="pr-1 flex items-center gap-1 text-[11px] font-sans text-[#91723A] font-medium flex-shrink-0">
               <span className="w-2 h-2 rounded-full bg-[#14A05C] animate-pulse" />
-              <span className="hidden sm:inline">Live</span>
+              <span className="hidden sm:inline">{t("shopLink.liveBadge")}</span>
               <ExternalLink className="w-3.5 h-3.5" />
             </div>
           </div>
@@ -157,10 +157,11 @@ export function ShopLinkSection() {
               {/* Top subtle live tag */}
               <div className="flex items-center justify-between w-full">
                 <span className="text-[9px] font-sans font-medium text-[#8A7F77] tracking-wider uppercase">
-                  Catalogue
+                  {t("shopLink.catalogueBadge")}
                 </span>
                 <span className="w-1.5 h-1.5 rounded-full bg-[#B8975A]/60 group-hover:bg-[#B8975A]" />
               </div>
+
 
               {/* Fixed Square Image Vessel (Different aspect ratios sit evenly inside) */}
               <div className="relative w-full h-[68%] flex items-center justify-center my-auto">

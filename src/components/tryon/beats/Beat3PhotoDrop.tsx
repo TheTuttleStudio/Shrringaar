@@ -7,7 +7,7 @@ import { useT } from "@/hooks/useT";
 import { Camera, Check } from "lucide-react";
 
 export function Beat3PhotoDrop() {
-  const { isHindi } = useT();
+  const { t, isHindi } = useT();
   const config = siteConfig.tryOn;
 
   return (
@@ -17,12 +17,12 @@ export function Beat3PhotoDrop() {
         <div className="flex items-center gap-1.5">
           <Camera className="w-3.5 h-3.5 text-[#91723A]" />
           <span className="text-[11px] font-sans font-medium text-[#1C1714]">
-            {isHindi ? "ग्राहक की सेल्फी" : "Customer Selfie"}
+            {t("tryOn.ui.customerSelfie")}
           </span>
         </div>
         <div className="px-2 py-0.5 rounded-full bg-[#B8975A]/15 border border-[#B8975A]/30 text-[9px] font-sans font-semibold text-[#91723A] flex items-center gap-1">
           <Check className="w-2.5 h-2.5 stroke-[3]" />
-          <span>{isHindi ? "फोटो जोड़ी गई" : "Photo Added"}</span>
+          <span>{t("tryOn.ui.photoAdded")}</span>
         </div>
       </div>
 
@@ -30,7 +30,7 @@ export function Beat3PhotoDrop() {
       <div className="relative flex-1 w-full my-2 rounded-2xl overflow-hidden border border-[#E8E0D5] bg-[#F5EFE6] shadow-[0_4px_16px_rgba(28,23,20,0.06)]">
         <Image
           src={config.customerImage}
-          alt="Customer Selfie Placeholder"
+          alt={t("tryOn.ui.altCustomerSelfie")}
           fill
           className="object-cover"
         />
@@ -38,7 +38,7 @@ export function Beat3PhotoDrop() {
         {/* Discrete Tap Instruction Overlay */}
         <div className="absolute top-2 left-2 right-2">
           <div className="px-2.5 py-1 rounded-full bg-[#1C1714]/75 backdrop-blur-xs text-[10px] font-sans text-[#FAF7F2] border border-white/10 text-center truncate">
-            {isHindi ? "पहनने के लिए इयररिंग पर टैप करें" : "Tap an earring to try on"}
+            {t("tryOn.ui.tapEarring")}
           </div>
         </div>
       </div>
@@ -61,18 +61,14 @@ export function Beat3PhotoDrop() {
                 <div className="relative w-8 h-8 sm:w-9 sm:h-9">
                   <Image
                     src={item.image}
-                    alt={item.id}
+                    alt={t(item.nameKey)}
                     fill
                     className="object-contain"
                   />
                 </div>
 
                 <span className="text-[8px] font-sans text-[#1C1714] font-medium truncate mt-0.5">
-                  {idx === 0
-                    ? isHindi ? "झुमका" : "Jhumka"
-                    : idx === 1
-                    ? isHindi ? "चांदबाली" : "Chandbali"
-                    : isHindi ? "स्टड" : "Stud"}
+                  {t(item.nameKey)}
                 </span>
 
                 {isSelected && (
@@ -85,6 +81,7 @@ export function Beat3PhotoDrop() {
           })}
         </div>
       </div>
+
     </div>
   );
 }

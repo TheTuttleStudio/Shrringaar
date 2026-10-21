@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState, useMemo } from "react";
+import React, { createContext, useContext, useMemo } from "react";
 import { en, ContentType } from "@/content/en";
 import { hi } from "@/content/hi";
 
@@ -8,10 +8,9 @@ export type Language = "en" | "hi";
 
 interface LanguageContextType {
   language: Language;
-  setLanguage: (lang: Language) => void;
-  toggleLanguage: () => void;
   t: (path: string, fallback?: string) => string;
   content: ContentType;
+  isHindi: boolean;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -21,7 +20,7 @@ const contentMap: Record<Language, ContentType> = {
   hi,
 };
 
-// Helper to access nested keys like "hero.title" or "nav.howItWorks"
+// Helper to access nested keys like "hero.title" or "pricing.title"
 function getNestedValue(obj: unknown, path: string): string | undefined {
   if (!obj || typeof obj !== "object") return undefined;
   const parts = path.split(".");
@@ -38,44 +37,14 @@ function getNestedValue(obj: unknown, path: string): string | undefined {
   return typeof current === "string" ? current : undefined;
 }
 
-export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [language, setLanguageState] = useState<Language>("en");
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    try {
-      const params = new URLSearchParams(window.location.search);
-      const queryLang = params.get("lang") as Language | null;
-      if (queryLang === "en" || queryLang === "hi") {
-        setLanguageState(queryLang);
-        setMounted(true);
-        return;
-      }
-
-      const saved = localStorage.getItem("shringaar_lang") as Language | null;
-      if (saved === "en" || saved === "hi") {
-        setLanguageState(saved);
-      }
-    } catch {
-      // localStorage may fail in restricted privacy mode
-    }
-    setMounted(true);
-  }, []);
-
-  const setLanguage = (lang: Language) => {
-    setLanguageState(lang);
-    try {
-      localStorage.setItem("shringaar_lang", lang);
-    } catch {
-      // ignore
-    }
-  };
-
-  const toggleLanguage = () => {
-    setLanguage(language === "en" ? "hi" : "en");
-  };
-
-  const content = useMemo(() => contentMap[language], [language]);
+export function LanguageProvider({
+  language,
+  children,
+}: {
+  language: Language;
+  children: React.ReactNode;
+}) {
+  const content = useMemo(() => contentMap[language] || en, [language]);
 
   const t = (path: string, fallback?: string): string => {
     const val = getNestedValue(content, path);
@@ -85,15 +54,10 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     return fallback || path;
   };
 
-  // Sync lang attribute on html tag
-  useEffect(() => {
-    if (typeof document !== "undefined") {
-      document.documentElement.lang = language;
-    }
-  }, [language]);
+  const isHindi = language === "hi";
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, toggleLanguage, t, content }}>
+    <LanguageContext.Provider value={{ language, t, content, isHindi }}>
       {children}
     </LanguageContext.Provider>
   );
@@ -102,14 +66,13 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 export function useLanguage() {
   const context = useContext(LanguageContext);
   if (!context) {
-    // Graceful fallback for SSR/tests
     return {
       language: "en" as Language,
-      setLanguage: () => {},
-      toggleLanguage: () => {},
       t: (path: string, fallback?: string) => getNestedValue(en, path) || fallback || path,
       content: en,
+      isHindi: false,
     };
   }
   return context;
 }
+

@@ -9,7 +9,7 @@ import { Menu, X, Globe } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function Header() {
-  const { t, language, setLanguage, isHindi } = useT();
+  const { t, language } = useT();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -33,9 +33,6 @@ export function Header() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Logo always uses Cormorant Garamond in all languages
-  const logoFont = "font-[family-name:var(--font-cormorant)]";
-
   return (
     <header
       className={cn(
@@ -48,7 +45,7 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 h-16 lg:h-20 flex items-center justify-between">
         {/* Brand Logo */}
         <Link
-          href="/"
+          href={language === "hi" ? "/hi" : "/"}
           className="flex items-baseline gap-1.5 group select-none"
           aria-label="Shringaar Home"
         >
@@ -81,43 +78,41 @@ export function Header() {
 
         {/* Right Section: Language Switcher & CTA */}
         <div className="hidden sm:flex items-center gap-5">
-          {/* Quiet Language Toggle */}
+          {/* Quiet Route-based Language Toggle */}
           <div
             className="relative flex items-center p-0.5 rounded-full border border-[#E8E0D5] bg-[#FFFDFB] text-xs font-sans select-none"
             role="group"
             aria-label="Language selection"
           >
-            <button
-              type="button"
-              onClick={() => setLanguage("en")}
+            <Link
+              href="/"
               className={cn(
                 "relative z-10 px-2.5 py-1 rounded-full transition-all duration-200 font-medium",
                 language === "en"
-                  ? "bg-[#1C1714] text-[#FAF7F2] shadow-sm"
+                  ? "bg-[#1C1714] text-[#FAF7F2] shadow-sm pointer-events-none"
                   : "text-[#6B625B] hover:text-[#1C1714]"
               )}
-              aria-pressed={language === "en"}
+              aria-current={language === "en" ? "page" : undefined}
             >
               EN
-            </button>
-            <button
-              type="button"
-              onClick={() => setLanguage("hi")}
+            </Link>
+            <Link
+              href="/hi"
               className={cn(
                 "relative z-10 px-2.5 py-1 rounded-full transition-all duration-200 font-medium",
                 language === "hi"
-                  ? "bg-[#1C1714] text-[#FAF7F2] shadow-sm"
+                  ? "bg-[#1C1714] text-[#FAF7F2] shadow-sm pointer-events-none"
                   : "text-[#6B625B] hover:text-[#1C1714]"
               )}
-              aria-pressed={language === "hi"}
+              aria-current={language === "hi" ? "page" : undefined}
             >
               हिंदी
-            </button>
+            </Link>
           </div>
 
           {/* Book a Demo CTA */}
           <Button
-            href="#book-demo"
+            href="#demo"
             variant="primary"
             size="sm"
             className="hidden md:inline-flex font-normal"
@@ -128,15 +123,15 @@ export function Header() {
 
         {/* Mobile Controls (Language & Hamburger) */}
         <div className="flex items-center gap-3 md:hidden">
-          {/* Mobile Language Toggle */}
-          <button
-            onClick={() => setLanguage(language === "en" ? "hi" : "en")}
+          {/* Mobile Language Route Toggle */}
+          <Link
+            href={language === "en" ? "/hi" : "/"}
             className="flex items-center gap-1 text-xs px-2.5 py-1 rounded-full border border-[#E8E0D5] text-[#5C534D] hover:border-[#B8975A] transition-colors"
-            aria-label="Toggle Language"
+            aria-label={language === "en" ? "हिंदी में बदलें" : "Switch to English"}
           >
             <Globe className="w-3.5 h-3.5 text-[#B8975A]" />
             <span>{language === "en" ? "हिंदी" : "EN"}</span>
-          </button>
+          </Link>
 
           {/* Mobile Menu Toggle Button */}
           <button
@@ -171,7 +166,7 @@ export function Header() {
 
           <div className="pt-2 flex flex-col gap-3">
             <Button
-              href="#book-demo"
+              href="#demo"
               variant="primary"
               size="md"
               className="w-full text-center"
@@ -185,3 +180,4 @@ export function Header() {
     </header>
   );
 }
+

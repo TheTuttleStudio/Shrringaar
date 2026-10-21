@@ -2,7 +2,6 @@
 
 import React from "react";
 import { Section } from "@/components/common/Section";
-import { Heading } from "@/components/common/Heading";
 import { Button } from "@/components/common/Button";
 import { Reveal } from "@/components/common/Reveal";
 import { useT } from "@/hooks/useT";
@@ -13,8 +12,12 @@ import { EnhancementSliderSection } from "@/components/sections/EnhancementSlide
 import { ModelsSection } from "@/components/sections/ModelsSection";
 import { TryOnStorySection } from "@/components/tryon/TryOnStorySection";
 import { ShopLinkSection } from "@/components/tryon/ShopLinkSection";
+import { NumbersStripSection } from "@/components/sections/NumbersStripSection";
+import { PricingSection } from "@/components/sections/PricingSection";
+import { FaqSection } from "@/components/sections/FaqSection";
+import { DemoFormSection } from "@/components/sections/DemoFormSection";
 
-export default function Home() {
+export function HomePage() {
   const { t, isHindi } = useT();
 
   const serifHeadingFont = isHindi
@@ -71,7 +74,7 @@ export default function Home() {
             <Reveal mode="mount" delay={0.26} className="hidden lg:block">
               <div className="flex items-center gap-3.5 pt-1 w-full sm:w-auto">
                 <Button
-                  href="#book-demo"
+                  href="#demo"
                   variant="primary"
                   size="lg"
                   className="w-full sm:w-auto font-normal shadow-sm"
@@ -112,7 +115,7 @@ export default function Home() {
             <Reveal mode="mount" delay={0.22} className="w-full">
               <div className="flex flex-col sm:flex-row items-center gap-2.5 w-full">
                 <Button
-                  href="#book-demo"
+                  href="#demo"
                   variant="primary"
                   size="lg"
                   className="w-full font-normal shadow-sm"
@@ -164,60 +167,17 @@ export default function Home() {
       {/* 5. The Shop's Own Link Section with Typewriter URL */}
       <ShopLinkSection />
 
-      {/* Pricing Section */}
-      <Section id="pricing" variant="ivory">
-        <Reveal>
-          <div className="max-w-3xl mx-auto text-center">
-            <Heading
-              level={2}
-              badge={t("placeholderSections.pricing.badge")}
-              subtitle={t("placeholderSections.pricing.subtitle")}
-              align="center"
-            >
-              {t("placeholderSections.pricing.title")}
-            </Heading>
-          </div>
-        </Reveal>
-      </Section>
+      {/* 6. Numbers Strip (Highlights) immediately after shop link */}
+      <NumbersStripSection />
 
-      {/* FAQ Section */}
-      <Section id="faq" variant="subtle">
-        <Reveal>
-          <div className="max-w-3xl mx-auto text-center">
-            <Heading
-              level={2}
-              badge={t("placeholderSections.faq.badge")}
-              subtitle={t("placeholderSections.faq.subtitle")}
-              align="center"
-            >
-              {t("placeholderSections.faq.title")}
-            </Heading>
-          </div>
-        </Reveal>
-      </Section>
+      {/* 7. Pricing Section */}
+      <PricingSection />
 
-      {/* Book a Demo CTA Form Section */}
-      <Section id="book-demo" variant="ivory" className="pb-32">
-        <Reveal>
-          <div className="max-w-2xl mx-auto text-center space-y-6">
-            <Heading
-              level={2}
-              badge={t("placeholderSections.demo.badge")}
-              subtitle={t("placeholderSections.demo.subtitle")}
-              align="center"
-            >
-              {t("placeholderSections.demo.title")}
-            </Heading>
+      {/* 8. FAQ Section */}
+      <FaqSection />
 
-            <div className="pt-4 flex justify-center">
-              <Button href="#book-demo" variant="primary" size="lg">
-                <span>{t("cta.bookDemo")}</span>
-                <ArrowRight className="w-4 h-4 ml-1" />
-              </Button>
-            </div>
-          </div>
-        </Reveal>
-      </Section>
+      {/* 9. Book a Demo Form Section */}
+      <DemoFormSection />
     </div>
   );
 }

@@ -8,17 +8,15 @@ import { useLanguage } from "@/context/LanguageContext";
  * - t: function to resolve key paths e.g. t('nav.howItWorks')
  * - content: directly typed current dictionary object
  * - language: 'en' | 'hi'
- * - setLanguage: (lang: 'en' | 'hi') => void
- * - toggleLanguage: () => void
+ * - isHindi: boolean
  */
 export function useT() {
-  const { t, content, language, setLanguage, toggleLanguage } = useLanguage();
+  const { t, content, language, isHindi } = useLanguage();
   return {
     t,
     content,
     language,
-    setLanguage,
-    toggleLanguage,
-    isHindi: language === "hi",
+    isHindi,
   };
 }
+

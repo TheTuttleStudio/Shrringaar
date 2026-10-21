@@ -1,11 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import {
-  Cormorant_Garamond,
-  Manrope,
-  Tiro_Devanagari_Hindi,
-  Noto_Sans_Devanagari,
-} from "next/font/google";
-import "./globals.css";
+import { Cormorant_Garamond, Manrope } from "next/font/google";
+import "../globals.css";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScroll";
 import { Header } from "@/components/layout/Header";
@@ -26,21 +21,6 @@ const manrope = Manrope({
   display: "swap",
 });
 
-const tiroHindi = Tiro_Devanagari_Hindi({
-  subsets: ["devanagari", "latin"],
-  weight: "400",
-  style: ["normal", "italic"],
-  variable: "--font-tiro-hindi",
-  display: "swap",
-});
-
-const notoHindi = Noto_Sans_Devanagari({
-  subsets: ["devanagari", "latin"],
-  weight: ["300", "400", "500", "600"],
-  variable: "--font-noto-hindi",
-  display: "swap",
-});
-
 export const metadata: Metadata = {
   title: "Shringaar | AI Platform for Indian Jewellery Shops",
   description:
@@ -54,6 +34,14 @@ export const metadata: Metadata = {
     "Shringaar",
   ],
   authors: [{ name: "Shringaar" }],
+  alternates: {
+    canonical: "https://shringaar.live",
+    languages: {
+      en: "https://shringaar.live",
+      hi: "https://shringaar.live/hi",
+      "x-default": "https://shringaar.live",
+    },
+  },
   openGraph: {
     title: "Shringaar | AI Platform for Indian Jewellery Shops",
     description:
@@ -74,17 +62,17 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({
+export default function EnglishRootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const fontVariables = `${cormorant.variable} ${manrope.variable} ${tiroHindi.variable} ${notoHindi.variable}`;
+  const fontVariables = `${cormorant.variable} ${manrope.variable}`;
 
   return (
     <html lang="en" className={fontVariables}>
       <body className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#1C1714] antialiased selection:bg-[#B8975A] selection:text-[#FAF7F2]">
-        <LanguageProvider>
+        <LanguageProvider language="en">
           <SmoothScrollProvider>
             <div className="flex flex-col min-h-screen">
               <Header />
