@@ -107,9 +107,9 @@ export function PricingSection() {
             </div>
           </Reveal>
 
-          {/* Card 2: More than one shop */}
+          {/* Card 2: Two or more shops */}
           <Reveal delay={0.2} className="h-full">
-            <div className="h-full flex flex-col justify-between p-8 sm:p-10 rounded-2xl bg-[#FFFDFB]/60 border border-[#E8E0D5] transition-all hover:border-[#D1C7BA]">
+            <div className="h-full flex flex-col justify-between p-8 sm:p-10 rounded-2xl bg-[#FFFDFB]/80 border border-[#E8E0D5] transition-all hover:border-[#D1C7BA]">
               <div className="space-y-6">
                 <div>
                   <h3
@@ -127,15 +127,22 @@ export function PricingSection() {
                   </p>
                 </div>
 
-                {/* Price Line */}
+                {/* Price Line: Custom Pricing (no duplicate "Talk to us") */}
                 <div className="pt-2 pb-4 border-b border-[#E8E0D5]">
                   <div className="text-2xl sm:text-3xl font-light font-sans text-[#1C1714]">
                     {t(siteConfig.pricing.multiShop.priceKey)}
                   </div>
                 </div>
+
+                {/* Informational Callout Box to balance height with Card 1 */}
+                <div className="p-4 sm:p-5 rounded-xl bg-[#FAF7F2] border border-[#E8E0D5]/70">
+                  <p className="text-xs sm:text-sm font-sans font-light text-[#5C534D] leading-relaxed">
+                    {t("pricing.multi.note")}
+                  </p>
+                </div>
               </div>
 
-              {/* CTA Button */}
+              {/* CTA Button: "Talk to us" appears ONLY here */}
               <div className="pt-8 mt-6">
                 <Button
                   href={siteConfig.pricing.multiShop.ctaHref}
@@ -148,6 +155,7 @@ export function PricingSection() {
               </div>
             </div>
           </Reveal>
+
         </div>
       </div>
     </Section>

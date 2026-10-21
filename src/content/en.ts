@@ -170,11 +170,13 @@ export const en = {
       cta: "Book a demo",
     },
     multi: {
-      name: "More than one shop",
-      price: "Talk to us",
+      name: "Two or more shops",
+      price: "Custom pricing",
       desc: "Running more than one store? Tell us about your shops and we'll plan it with you.",
+      note: "We'll discuss your store locations and catalogue size to plan a setup that fits your business.",
       cta: "Talk to us",
     },
+
   },
   faq: {
     title: "Frequently asked questions",

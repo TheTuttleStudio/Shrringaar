@@ -28,15 +28,14 @@ export async function POST(request: Request) {
     const normalizedMobile = cleanIndianMobile(whatsapp);
 
     // TODO: Connect real CRM / database / WhatsApp notification service
+    // Visitor name and phone number are NOT logged to the console for privacy.
     console.log("Demo request received:", {
-      name,
-      shopName,
       city,
-      whatsapp: `+91 ${normalizedMobile}`,
       storeCount,
-      message,
+      hasMessage: Boolean(message && message.length > 0),
       submittedAt: new Date().toISOString(),
     });
+
 
     return NextResponse.json({
       success: true,
