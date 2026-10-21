@@ -27,15 +27,18 @@ export const demoFormSchema = z.object({
   name: z
     .string()
     .trim()
-    .min(2, { message: "errors.name" }),
+    .min(2, { message: "errors.name" })
+    .max(80, { message: "errors.nameMax" }),
   shopName: z
     .string()
     .trim()
-    .min(2, { message: "errors.shopName" }),
+    .min(2, { message: "errors.shopName" })
+    .max(100, { message: "errors.shopNameMax" }),
   city: z
     .string()
     .trim()
-    .min(2, { message: "errors.city" }),
+    .min(2, { message: "errors.city" })
+    .max(60, { message: "errors.cityMax" }),
   whatsapp: z
     .string()
     .trim()
@@ -46,9 +49,15 @@ export const demoFormSchema = z.object({
     .enum(["1", "2-5", "6-10", "10+"], {
       message: "errors.storeCount",
     }),
-  message: z.string().trim().optional().default(""),
+  message: z
+    .string()
+    .trim()
+    .max(1000, { message: "errors.messageMax" })
+    .optional()
+    .default(""),
   // Honeypot field (must be empty)
   website_url: z.string().optional().default(""),
 });
+
 
 export type DemoFormData = z.infer<typeof demoFormSchema>;

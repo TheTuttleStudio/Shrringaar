@@ -139,8 +139,9 @@ export const en = {
   numbersStrip: {
     item1: {
       title: "Studio-quality photos",
-      desc: "Clean light. True colours.",
+      desc: "Clean light. Natural gold tones.",
     },
+
     item2: {
       title: "Works on phones",
       desc: "Customers open it in their phone's browser.",
@@ -253,12 +254,17 @@ export const en = {
     successMessage: "We got your request. We'll message you on WhatsApp to set up a time.",
     errors: {
       name: "Please enter your name.",
+      nameMax: "Please enter a name under 80 characters.",
       shopName: "Please enter your jewellery shop name.",
+      shopNameMax: "Please enter a shop name under 100 characters.",
       city: "Please enter your city.",
+      cityMax: "Please enter a city under 60 characters.",
       whatsapp: "Please enter a valid 10-digit Indian WhatsApp number.",
       storeCount: "Please select how many stores you have.",
-      generic: "Something went wrong. Please try again or chat with us on WhatsApp.",
+      messageMax: "Please enter a message under 1,000 characters.",
+      generic: "Something went wrong. Please try again in a moment.",
     },
+
   },
   footer: {
     description: "Quiet luxury technology for traditional Indian jewellers. Enhancing craft with respectful intelligence.",
