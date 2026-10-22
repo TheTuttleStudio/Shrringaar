@@ -93,20 +93,20 @@ export function HeroVisual() {
       `}</style>
 
       {/* 
-        Outer Stage: Fixed 1:1 Aspect Ratio container
+        Outer Stage: Fixed 4:5 Aspect Ratio portrait showcase
         Prevents any Cumulative Layout Shift (CLS) during page loading.
       */}
       <div
         ref={containerRef}
         onPointerMove={handlePointerMove}
         onPointerLeave={handlePointerLeave}
-        className="relative w-full aspect-square max-w-[340px] sm:max-w-[420px] lg:max-w-[460px] rounded-2xl sm:rounded-3xl bg-gradient-to-b from-[#FFFDFB] to-[#F5EFE6]/80 border border-[#E8E0D5]/70 shadow-[0_8px_30px_rgba(28,23,20,0.04)] overflow-hidden p-3 sm:p-5 flex items-center justify-center select-none"
+        className="relative w-full aspect-[4/5] max-w-[340px] sm:max-w-[390px] lg:max-w-[430px] rounded-3xl bg-[#1C1714] border border-[#E8E0D5] shadow-[0_20px_60px_rgba(28,23,20,0.12)] overflow-hidden flex items-center justify-center select-none"
         style={{
           perspective: 900,
         }}
       >
         {/* Subtle Ambient Radial Luxury Glow */}
-        <div className="absolute inset-0 pointer-events-none bg-radial from-[#B8975A]/10 via-transparent to-transparent opacity-70" />
+        <div className="absolute inset-0 pointer-events-none bg-radial from-[#B8975A]/20 via-transparent to-transparent opacity-60 z-10" />
 
         {/* 
           Inner Tilt & Float Wrapper
@@ -122,19 +122,19 @@ export function HeroVisual() {
             transformStyle: "preserve-3d",
           }}
         >
-          {/* Desktop Image (Retina 1200x1200 WebP) */}
+          {/* Desktop Image (Retina WebP) */}
           <div className="hidden sm:block relative w-full h-full">
             <Image
               src={heroConfig.image.desktop}
               alt={altText}
               fill
               priority
-              sizes="(max-width: 1024px) 420px, 460px"
-              className="object-contain"
+              sizes="(max-width: 1024px) 390px, 430px"
+              className="object-cover object-center"
             />
           </div>
 
-          {/* Mobile Image (Optimized 640x640 WebP) */}
+          {/* Mobile Image (Optimized WebP) */}
           <div className="block sm:hidden relative w-full h-full">
             <Image
               src={heroConfig.image.mobile}
@@ -142,32 +142,39 @@ export function HeroVisual() {
               fill
               priority
               sizes="(max-width: 640px) 340px"
-              className="object-contain"
+              className="object-cover object-center"
             />
           </div>
 
-          {/* Subtle CSS Sparkles (Layered on top of image) */}
+          {/* Luxury Atelier Corner Badge */}
+          <div className="absolute bottom-4 left-4 z-20 pointer-events-none">
+            <span className="px-3 py-1 rounded-full bg-[#1C1714]/75 backdrop-blur-md border border-[#B8975A]/35 text-[11px] font-sans font-light tracking-wider text-[#FAF7F2]">
+              Atelier Try-On • 22K Heritage
+            </span>
+          </div>
+
+          {/* Subtle CSS Sparkles on Jewels */}
           {shouldSparkle && (
-            <div className="absolute inset-0 pointer-events-none overflow-hidden">
-              {/* Sparkle 1: Solitaire Diamond Crown Top */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden z-20">
+              {/* Sparkle 1: Emerald Pendant Core */}
               <div
-                className="sparkle-dot absolute top-[14%] left-[49%] text-[#B8975A] text-sm filter drop-shadow-[0_0_4px_rgba(255,255,255,0.9)]"
+                className="sparkle-dot absolute top-[72%] left-[49%] text-[#B8975A] text-sm filter drop-shadow-[0_0_4px_rgba(255,255,255,0.9)]"
                 style={{ animationDelay: "0s" }}
               >
                 ✦
               </div>
 
-              {/* Sparkle 2: Right Shoulder Pavé */}
+              {/* Sparkle 2: Chandbali Earring */}
               <div
-                className="sparkle-dot absolute top-[28%] left-[71%] text-[#D4AF37] text-xs filter drop-shadow-[0_0_3px_rgba(255,255,255,0.8)]"
+                className="sparkle-dot absolute top-[32%] left-[47%] text-[#D4AF37] text-xs filter drop-shadow-[0_0_3px_rgba(255,255,255,0.8)]"
                 style={{ animationDelay: "1.8s" }}
               >
                 ✦
               </div>
 
-              {/* Sparkle 3: Left Shoulder Highlight */}
+              {/* Sparkle 3: Right Collar Motif */}
               <div
-                className="sparkle-dot absolute top-[29%] left-[27%] text-[#E6C687] text-[10px] filter drop-shadow-[0_0_3px_rgba(255,255,255,0.8)]"
+                className="sparkle-dot absolute top-[56%] left-[62%] text-[#E6C687] text-[10px] filter drop-shadow-[0_0_3px_rgba(255,255,255,0.8)]"
                 style={{ animationDelay: "3.2s" }}
               >
                 ✦

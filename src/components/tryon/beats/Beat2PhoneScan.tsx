@@ -55,7 +55,7 @@ export function Beat2PhoneScan() {
         <div className="absolute left-2 right-2 h-[2px] bg-gradient-to-r from-transparent via-[#FFDF99] to-transparent shadow-[0_0_12px_#B8975A] animate-pulse" />
       </div>
 
-      {/* Bottom Popup Drawer: Opening yourshop.shringaar.live */}
+      {/* Bottom Popup Drawer: Opening yourshop.shrringaar.live */}
       <div className="relative w-full pb-2 z-20">
         <div className="w-full p-2.5 rounded-2xl bg-[#FAF7F2] text-[#1C1714] shadow-[0_8px_24px_rgba(0,0,0,0.5)] border border-[#E8E0D5] flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-full bg-[#B8975A] text-white flex items-center justify-center flex-shrink-0">

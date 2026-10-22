@@ -7,7 +7,7 @@ import { Reveal } from "@/components/common/Reveal";
 import { useT } from "@/hooks/useT";
 import { Sparkles, ArrowRight, ShieldCheck } from "lucide-react";
 import { HeroVisual } from "@/components/hero/HeroVisual";
-import { HowItWorksSection } from "@/components/sections/HowItWorksSection";
+import { HowItWorks } from "@/components/how-it-works/HowItWorks";
 import { EnhancementSliderSection } from "@/components/sections/EnhancementSliderSection";
 import { ModelsSection } from "@/components/sections/ModelsSection";
 import { TryOnStorySection } from "@/components/tryon/TryOnStorySection";
@@ -153,7 +153,7 @@ export function HomePage() {
       </Section>
 
       {/* 1. How it works Section */}
-      <HowItWorksSection />
+      <HowItWorks />
 
       {/* 2. Image Enhancement Before/After Slider Section */}
       <EnhancementSliderSection />

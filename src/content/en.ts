@@ -1,6 +1,6 @@
 export const en = {
   brand: {
-    name: "Shringaar",
+    name: "Shrringaar.Live",
     tagline: "AI studio for Indian jewellery shops",
   },
   nav: {
@@ -27,10 +27,10 @@ export const en = {
     headingPrefix: "Turn simple counter photos into",
     headingAccent: "studio brilliance",
     headingSuffix: "in seconds.",
-    description: "Take photos on your phone. Shringaar cleans reflections, preserves authentic gold tones, and publishes an instant live catalogue with customer try-on.",
+    description: "Take photos on your phone. Shrringaar cleans reflections, preserves authentic gold tones, and publishes an instant live catalogue with customer try-on.",
     secondaryAction: "Explore live demo",
     badgeRating: "Works on any phone. No app to install.",
-    imageAlt: "Shringaar Fine Jewellery Solitaire Ring",
+    imageAlt: "Shrringaar.Live Heritage Gold and Emerald Jewellery",
   },
   howItWorks: {
     tag: "Simple 4-Step Process",
@@ -103,7 +103,7 @@ export const en = {
       earring3: "Solitaire Studs",
       resultBadge: "Try-on Result",
       scanInstruction: "Point your phone camera at the stand",
-      scanning: "Opening yourshop.shringaar.live...",
+      scanning: "Opening yourshop.shrringaar.live...",
       scanToTryOn: "Scan to try on",
       qrDetected: "QR Code Detected",
       openingApp: "Opening instant web app...",
@@ -124,7 +124,7 @@ export const en = {
     tag: "Your Digital Counter",
     title: "Your shop's own link, always live",
     line: "Your own link. Show it to any customer, anywhere.",
-    urlAria: "Your shop's live digital counter address: yourshop.shringaar.live",
+    urlAria: "Your shop's live digital counter address: yourshop.shrringaar.live",
     liveBadge: "Live",
     catalogueBadge: "Catalogue",
     items: {
@@ -165,7 +165,7 @@ export const en = {
       hiddenPrice: "Ask us for pricing",
       desc: "Everything you need to put your catalogue online and let customers try it on.",
       f1: "Your photos cleaned to studio quality",
-      f2: "Your own shop link (yourshop.shringaar.live)",
+      f2: "Your own shop link (yourshop.shrringaar.live)",
       f3: "A QR code for your shop",
       f4: "Customer try-on from their phone",
       cta: "Book a demo",
@@ -212,7 +212,7 @@ export const en = {
     },
     q8: {
       q: "Can I use my own shop name in the link?",
-      a: "Yes. Your catalogue lives at your own dedicated address, like yourshop.shringaar.live, so customers always know it is your store.",
+      a: "Yes. Your catalogue lives at your own dedicated address, like yourshop.shrringaar.live, so customers always know it is your store.",
     },
     q9: {
       q: "What happens in the demo?",
@@ -271,7 +271,7 @@ export const en = {
     quickLinks: "Sections",
     contact: "Contact",
     phone: "+91 98200 12345",
-    email: "namaste@shringaar.live",
+    email: "namaste@shrringaar.live",
     location: "Built with reverence for fine Indian jewellery craft",
     rights: "All rights reserved.",
     privacy: "Privacy Policy",

@@ -2,7 +2,7 @@ import { ContentType } from "./en";
 
 export const hi: ContentType = {
   brand: {
-    name: "Shringaar",
+    name: "Shrringaar.Live",
     tagline: "भारतीय आभूषण दुकानों के लिए आधुनिक AI स्टूडियो",
   },
   nav: {
@@ -32,7 +32,7 @@ export const hi: ContentType = {
     description: "अपने फोन से साधारण फोटो खींचिए। शृंगार सोने की असली चमक और असली रंग बरकरार रखते हुए फोटो साफ करता है, और आपकी दुकान के नाम का ऑनलाइन लिंक तुरंत तैयार कर देता है।",
     secondaryAction: "लाइव डेमो देखें",
     badgeRating: "हर फोन पर काम करता है। कोई ऐप इंस्टॉल करने की जरूरत नहीं।",
-    imageAlt: "शृंगार फाइन ज्वैलरी सॉलिटेयर अंगूठी",
+    imageAlt: "शृंगार.लाइव हेरिटेज गोल्ड व एमराल्ड आभूषण",
   },
   howItWorks: {
     tag: "सरल 4 चरणों की प्रक्रिया",
@@ -105,7 +105,7 @@ export const hi: ContentType = {
       earring3: "सॉलिटेयर स्टड्स",
       resultBadge: "लाइव ट्राय-ऑन परिणाम",
       scanInstruction: "अपने फोन के कैमरे को स्टैंड पर रखें",
-      scanning: "yourshop.shringaar.live खुल रहा है...",
+      scanning: "yourshop.shrringaar.live खुल रहा है...",
       scanToTryOn: "कैमरे से स्कैन करें",
       qrDetected: "QR कोड पहचाना गया",
       openingApp: "ब्राउज़र में तुरंत खुला",
@@ -126,7 +126,7 @@ export const hi: ContentType = {
     tag: "आपकी डिजिटल दुकान",
     title: "आपकी दुकान का अपना लिंक, हमेशा चालू",
     line: "आपकी दुकान का निजी लिंक। किसी भी ग्राहक को कहीं भी दिखाएं।",
-    urlAria: "आपकी दुकान का लाइव डिजिटल लिंक: yourshop.shringaar.live",
+    urlAria: "आपकी दुकान का लाइव डिजिटल लिंक: yourshop.shrringaar.live",
     liveBadge: "लाइव",
     catalogueBadge: "कैटलॉग",
     items: {
@@ -167,7 +167,7 @@ export const hi: ContentType = {
       hiddenPrice: "कीमत के लिए हमसे बात करें",
       desc: "अपना कैटलॉग ऑनलाइन लाने और ग्राहकों को पहनाकर दिखाने के लिए सब कुछ।",
       f1: "आपकी फ़ोटो स्टूडियो क्वालिटी में साफ़",
-      f2: "आपकी दुकान का अपना लिंक (yourshop.shringaar.live)",
+      f2: "आपकी दुकान का अपना लिंक (yourshop.shrringaar.live)",
       f3: "आपकी दुकान के लिए एक QR कोड",
       f4: "ग्राहक अपने फ़ोन से सीधे पहनकर देखें",
       cta: "डेमो बुक करें",
@@ -214,7 +214,7 @@ export const hi: ContentType = {
     },
     q8: {
       q: "क्या मैं लिंक में अपनी दुकान का नाम रख सकता हूँ?",
-      a: "हाँ। आपका कैटलॉग आपके अपने पते पर रहता है, जैसे yourshop.shringaar.live, ताकि ग्राहकों को हमेशा पता रहे कि यह आपकी दुकान है।",
+      a: "हाँ। आपका कैटलॉग आपके अपने पते पर रहता है, जैसे yourshop.shrringaar.live, ताकि ग्राहकों को हमेशा पता रहे कि यह आपकी दुकान है।",
     },
     q9: {
       q: "डेमो में क्या होता है?",
@@ -273,7 +273,7 @@ export const hi: ContentType = {
     quickLinks: "मुख्य भाग",
     contact: "संपर्क",
     phone: "+91 98200 12345",
-    email: "namaste@shringaar.live",
+    email: "namaste@shrringaar.live",
     location: "पारंपरिक भारतीय आभूषण कला के सम्मान में निर्मित",
     rights: "सर्वाधिकार सुरक्षित।",
     privacy: "गोपनीयता नीति",

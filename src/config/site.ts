@@ -108,22 +108,23 @@ export interface ShopLinkConfig {
 }
 
 export const siteConfig = {
-  name: "Shringaar",
-  domain: "shringaar.live",
-  url: "https://shringaar.live",
+  name: "Shrringaar.Live",
+  shortName: "Shrringaar",
+  domain: "shrringaar.live",
+  url: "https://shrringaar.live",
   contact: {
-    email: "namaste@shringaar.live",
+    email: "namaste@shrringaar.live",
     phone: "+91 98200 12345",
-    whatsapp: "https://wa.me/919820012345?text=Hello%20Shringaar%20Team%2C%20I%20would%20like%20to%20know%20more.",
+    whatsapp: "https://wa.me/919820012345?text=Hello%20Shrringaar%20Team%2C%20I%20would%20like%20to%20know%20more.",
     address: "Mumbai & Jaipur, India",
   },
   hero: {
     image: {
-      desktop: "/images/hero-ring.webp",
-      mobile: "/images/hero-ring-mobile.webp",
+      desktop: "/images/hero-jewellery.webp",
+      mobile: "/images/hero-jewellery-mobile.webp",
       altKey: "hero.imageAlt",
-      fallbackAlt: "Shringaar Fine Jewellery Solitaire Ring",
-      aspectRatio: "1 / 1",
+      fallbackAlt: "Shrringaar.Live Heritage Gold and Emerald Jewellery",
+      aspectRatio: "3 / 4",
     },
     motion: {
       enableFloat: true,
@@ -217,7 +218,7 @@ export const siteConfig = {
     titleKey: "tryOn.title",
     closingLineKey: "tryOn.closingLine",
     sampleSlug: "yourshop",
-    sampleUrl: "yourshop.shringaar.live",
+    sampleUrl: "yourshop.shrringaar.live",
     portraitAspectRatio: "4 / 5",
     qrImage: "/images/qr-sample.svg",
     customerImage: "/images/tryon-customer.jpg",
@@ -271,7 +272,7 @@ export const siteConfig = {
     titleKey: "shopLink.title",
     lineKey: "shopLink.line",
     sampleSlug: "yourshop",
-    sampleUrl: "yourshop.shringaar.live",
+    sampleUrl: "yourshop.shrringaar.live",
     items: [
       {
         id: "item-1",

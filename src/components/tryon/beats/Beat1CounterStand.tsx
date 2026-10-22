@@ -28,7 +28,7 @@ export function Beat1CounterStand() {
           <div className="flex items-center gap-1.5 mb-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-[#B8975A]" />
             <span className="text-[11px] font-serif font-medium text-[#1C1714] tracking-wider uppercase">
-              Shringaar
+              Shrringaar.Live
             </span>
             <span className="w-1.5 h-1.5 rounded-full bg-[#B8975A]" />
           </div>

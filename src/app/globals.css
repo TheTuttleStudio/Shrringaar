@@ -21,6 +21,29 @@
   --font-manrope: var(--font-manrope), "Manrope", -apple-system, BlinkMacSystemFont, sans-serif;
   --font-tiro-hindi: var(--font-tiro-hindi), "Tiro Devanagari Hindi", Georgia, serif;
   --font-noto-hindi: var(--font-noto-hindi), "Noto Sans Devanagari", sans-serif;
+  --font-serif: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+
+  --color-section: var(--section);
+  --color-gold-soft: var(--gold-soft);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
 }
 
 :root {
@@ -28,6 +51,31 @@
   --text-espresso: #1C1714;
   --gold-accent: #B8975A;
   --bg-dark: #14110F;
+
+  --radius: 0.875rem;
+  --background: oklch(0.982 0.006 80);
+  --foreground: oklch(0.24 0.008 60);
+  --card: oklch(0.985 0.005 80);
+  --card-foreground: oklch(0.24 0.008 60);
+  --popover: oklch(0.985 0.005 80);
+  --popover-foreground: oklch(0.24 0.008 60);
+  --primary: oklch(0.22 0.006 60);
+  --primary-foreground: oklch(0.98 0.005 80);
+  --secondary: oklch(0.95 0.015 75);
+  --secondary-foreground: oklch(0.24 0.008 60);
+  --muted: oklch(0.95 0.015 75);
+  --muted-foreground: oklch(0.47 0.015 60);
+  --accent: oklch(0.92 0.03 80);
+  --accent-foreground: oklch(0.42 0.06 70);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.98 0 0);
+  --border: oklch(0.9 0.018 75);
+  --input: oklch(0.9 0.018 75);
+  --ring: oklch(0.7 0.08 80);
+  --section: oklch(0.955 0.016 75);
+  --gold-soft: oklch(0.86 0.05 80);
+  --shadow-soft: 0 30px 60px -30px color-mix(in oklab, var(--foreground) 30%, transparent);
+  --glow-gold: radial-gradient(circle, color-mix(in oklab, var(--gold-soft) 70%, transparent), transparent 65%);
 }
 
 html {
@@ -55,6 +103,7 @@ html[lang="hi"] body {
 html[lang="hi"] h1:not(.font-logo),
 html[lang="hi"] h2:not(.font-logo),
 html[lang="hi"] h3:not(.font-logo),
+html[lang="hi"] .font-serif:not(.font-logo),
 html[lang="hi"] .font-serif-heading:not(.font-logo) {
   font-family: var(--font-tiro-hindi), serif;
   letter-spacing: normal !important;
@@ -62,6 +111,45 @@ html[lang="hi"] .font-serif-heading:not(.font-logo) {
 
 .font-logo {
   font-family: var(--font-cormorant), "Cormorant Garamond", Georgia, serif !important;
+}
+
+@layer base {
+  *, *::before, *::after {
+    border-color: var(--color-border);
+  }
+}
+
+@utility shadow-soft {
+  box-shadow: var(--shadow-soft);
+}
+
+@utility bg-glow-gold {
+  background-image: var(--glow-gold);
+}
+
+@utility reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+  &[data-visible="true"] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility sparkle {
+  animation: sparkle 3.2s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0.6) rotate(0deg);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1) rotate(45deg);
+  }
 }
 
 /* Subtle luxury selection */
@@ -119,5 +207,9 @@ html.lenis body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

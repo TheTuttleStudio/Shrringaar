@@ -19,7 +19,7 @@ export function ShopLinkSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const hasTriggered = useRef(false);
 
-  const fullUrl = config.sampleUrl; // "yourshop.shringaar.live"
+  const fullUrl = config.sampleUrl; // "yourshop.shrringaar.live"
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");

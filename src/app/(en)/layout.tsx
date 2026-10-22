@@ -22,7 +22,7 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Shringaar | AI Platform for Indian Jewellery Shops",
+  title: "Shrringaar.Live | AI Platform for Indian Jewellery Shops",
   description:
     "Transform normal counter photos into studio-grade jewellery catalogues. Instant live links with customer virtual try-on and AI models for Indian jewellery showrooms.",
   keywords: [
@@ -31,23 +31,24 @@ export const metadata: Metadata = {
     "virtual try-on jewellery",
     "jewellery photo cleaner",
     "gold jewellery photoshoot AI",
-    "Shringaar",
+    "Shrringaar.Live",
+    "Shrringaar",
   ],
-  authors: [{ name: "Shringaar" }],
+  authors: [{ name: "Shrringaar.Live" }],
   alternates: {
-    canonical: "https://shringaar.live",
+    canonical: "https://shrringaar.live",
     languages: {
-      en: "https://shringaar.live",
-      hi: "https://shringaar.live/hi",
-      "x-default": "https://shringaar.live",
+      en: "https://shrringaar.live",
+      hi: "https://shrringaar.live/hi",
+      "x-default": "https://shrringaar.live",
     },
   },
   openGraph: {
-    title: "Shringaar | AI Platform for Indian Jewellery Shops",
+    title: "Shrringaar.Live | AI Platform for Indian Jewellery Shops",
     description:
       "Transform normal counter photos into studio-grade jewellery catalogues with customer virtual try-on.",
-    url: "https://shringaar.live",
-    siteName: "Shringaar",
+    url: "https://shrringaar.live",
+    siteName: "Shrringaar.Live",
     locale: "en_IN",
     type: "website",
   },

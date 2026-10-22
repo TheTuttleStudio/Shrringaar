@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { siteConfig } from "@/config/site";
 import { useT } from "@/hooks/useT";
 import { Button } from "@/components/common/Button";
@@ -46,18 +47,17 @@ export function Header() {
         {/* Brand Logo */}
         <Link
           href={language === "hi" ? "/hi" : "/"}
-          className="flex items-baseline gap-1.5 group select-none"
-          aria-label="Shringaar Home"
+          className="flex items-center group select-none py-1"
+          aria-label="Shrringaar.Live Home"
         >
-          <span
-            className={cn(
-              "font-logo text-2xl sm:text-3xl font-light tracking-wide text-[#1C1714] transition-colors group-hover:text-[#B8975A]"
-            )}
-            style={{ fontFamily: "var(--font-cormorant), 'Cormorant Garamond', Georgia, serif" }}
-          >
-            {siteConfig.name}
-          </span>
-          <span className="w-1.5 h-1.5 rounded-full bg-[#B8975A] inline-block transition-transform duration-300 group-hover:scale-125" />
+          <Image
+            src="/images/logo.png"
+            alt="Shrringaar.Live - Atelier Try-On"
+            width={222}
+            height={60}
+            priority
+            className="h-8 sm:h-9 lg:h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+          />
         </Link>
 
         {/* Desktop Navigation Links */}

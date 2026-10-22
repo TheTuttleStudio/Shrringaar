@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { siteConfig } from "@/config/site";
 import { useT } from "@/hooks/useT";
 import { cn } from "@/lib/utils";
@@ -10,25 +11,25 @@ export function Footer() {
   const { t, isHindi } = useT();
   const currentYear = 2026;
 
-  // Logo always uses Cormorant Garamond in all languages
-  const logoFont = "font-[family-name:var(--font-cormorant)]";
-
   return (
     <footer className="w-full bg-[#F5EFE6] text-[#1C1714] border-t border-[#E8E0D5] pt-16 pb-12 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 pb-16 border-b border-[#E8E0D5]/70">
           {/* Brand Col */}
           <div className="md:col-span-5 space-y-4">
-            <div className="flex items-baseline gap-1.5">
-              <span
-                className={cn(
-                  "font-logo text-3xl font-light tracking-wide text-[#1C1714]"
-                )}
-              >
-                {siteConfig.name}
-              </span>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#B8975A]" />
-            </div>
+            <Link
+              href={isHindi ? "/hi" : "/"}
+              className="inline-block select-none"
+              aria-label="Shrringaar.Live Home"
+            >
+              <Image
+                src="/images/logo.png"
+                alt="Shrringaar.Live - Atelier Try-On"
+                width={222}
+                height={60}
+                className="h-10 sm:h-11 w-auto object-contain"
+              />
+            </Link>
             <p className="text-sm font-sans text-[#6B625B] max-w-sm leading-relaxed">
               {t("footer.description")}
             </p>

@@ -34,7 +34,7 @@ const notoHindi = Noto_Sans_Devanagari({
 });
 
 export const metadata: Metadata = {
-  title: "शृंगार | भारतीय आभूषण दुकानों के लिए AI प्लेटफ़ॉर्म",
+  title: "शृंगार.लाइव | भारतीय आभूषण दुकानों के लिए AI प्लेटफ़ॉर्म",
   description:
     "साधारण काउंटर फोटो को स्टूडियो-ग्रेड आभूषण कैटलॉग में बदलें। लाइव लिंक, वर्चुअल ट्राय-ऑन और AI मॉडल भारतीय ज्वेलरी शोरूम के लिए।",
   keywords: [
@@ -43,25 +43,27 @@ export const metadata: Metadata = {
     "virtual try-on jewellery",
     "jewellery photo cleaner",
     "gold jewellery photoshoot AI",
-    "Shringaar",
+    "Shrringaar.Live",
+    "Shrringaar",
+    "शृंगार.लाइव",
     "शृंगार",
     "आभूषण कैटलॉग",
   ],
-  authors: [{ name: "Shringaar" }],
+  authors: [{ name: "Shrringaar.Live" }],
   alternates: {
-    canonical: "https://shringaar.live/hi",
+    canonical: "https://shrringaar.live/hi",
     languages: {
-      en: "https://shringaar.live",
-      hi: "https://shringaar.live/hi",
-      "x-default": "https://shringaar.live",
+      en: "https://shrringaar.live",
+      hi: "https://shrringaar.live/hi",
+      "x-default": "https://shrringaar.live",
     },
   },
   openGraph: {
-    title: "शृंगार | भारतीय आभूषण दुकानों के लिए AI प्लेटफ़ॉर्म",
+    title: "शृंगार.लाइव | भारतीय आभूषण दुकानों के लिए AI प्लेटफ़ॉर्म",
     description:
       "साधारण काउंटर फोटो को स्टूडियो-ग्रेड आभूषण कैटलॉग में बदलें। लाइव लिंक, वर्चुअल ट्राय-ऑन और AI मॉडल।",
-    url: "https://shringaar.live/hi",
-    siteName: "Shringaar",
+    url: "https://shrringaar.live/hi",
+    siteName: "Shrringaar.Live",
     locale: "hi_IN",
     type: "website",
   },
